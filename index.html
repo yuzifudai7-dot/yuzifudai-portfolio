@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio</title>
+    <style>
+      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;margin:0;display:grid;min-height:100vh;place-items:center;padding:24px}
+      .card{max-width:720px;width:100%;border:1px solid #e5e7eb;border-radius:16px;padding:20px}
+      h1{margin:0 0 8px;font-size:22px}
+      p{margin:0 0 14px;color:#4b5563;line-height:1.5}
+      .row{display:flex;gap:10px;flex-wrap:wrap}
+      a{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid #e5e7eb;text-decoration:none;color:#111827}
+      a:hover{border-color:#9ca3af}
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>Choose language / 选择语言</h1>
+      <p>If you’re not redirected automatically, pick one:</p>
+      <div class="row">
+        <a href="./en/">English</a>
+        <a href="./zh/">中文</a>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("preferred_locale");
+          if (saved === "zh" || saved === "en") {
+            location.replace("./" + saved + "/");
+            return;
+          }
+        } catch (_) {}
+
+        var lang = (navigator.language || "").toLowerCase();
+        var target = lang.startsWith("zh") ? "zh" : "en";
+        location.replace("./" + target + "/");
+      })();
+    </script>
+  </body>
+</html>

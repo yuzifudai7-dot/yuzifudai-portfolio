@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>yuzifudai鱼籽福袋 — 作品集</title>
+    <meta name="description" content="yuzifudai鱼籽福袋的作品集：精选笔记与资料、以及联系方式。" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">跳到内容</a>
+
+    <header>
+      <div class="wrap nav">
+        <a class="brand" href="./">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <strong>yuzifudai鱼籽福袋</strong>
+            <span>中国古代文学 · 笔记整理</span>
+          </div>
+        </a>
+        <nav class="navlinks">
+          <a href="#projects">项目</a>
+          <a href="#about">关于</a>
+          <a href="#contact" class="pill">联系</a>
+          <a href="../en/" class="pill" aria-label="切换到英文">EN</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content" class="wrap">
+      <div class="hero">
+        <section class="card">
+          <div class="kicker"><span class="kdot"></span> 可合作 / 可接项目</div>
+          <h1>做出“快、清晰、好用”的产品体验。</h1>
+          <p>这里展示我整理的古代文学（及相关）资料与结构化笔记。</p>
+          <div class="cta">
+            <a class="btn primary" href="#projects">看项目</a>
+            <a class="btn" href="#contact">联系我</a>
+          </div>
+        </section>
+
+        <aside class="card meta">
+          <div class="row">
+            <div class="chip">
+              <b>所在地</b>
+              <span>—</span>
+            </div>
+            <div class="chip">
+              <b>方向</b>
+              <span>先秦至近代 · 考研笔记</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="chip">
+              <b>邮箱</b>
+              <span><a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a></span>
+            </div>
+            <div class="chip">
+              <b>简历</b>
+              <span>—</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section id="projects">
+        <div class="section-head">
+          <h2>精选项目</h2>
+          <small>在 <code>assets/js/projects-data.js</code> 改项目数据</small>
+        </div>
+        <div class="grid" data-projects></div>
+      </section>
+
+      <section id="about" class="card" style="padding:18px">
+        <div class="section-head">
+          <h2>关于我</h2>
+          <small>建议 5–8 行</small>
+        </div>
+        <p>
+          简短介绍（可选）：你关注什么方向、目前在学/在研究什么、你希望合作或交流的主题。
+        </p>
+      </section>
+
+      <section id="contact" class="card" style="padding:18px">
+        <div class="section-head">
+          <h2>联系</h2>
+          <small>一个明确的行动入口</small>
+        </div>
+        <p>
+          最快联系到我的是邮箱：
+          <a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a>。
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="mailto:yuzifudai7@gmail.com">发邮件</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div>© <span id="y"></span> yuzifudai鱼籽福袋 · 纯静态站点，加载很快。</div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/projects-data.js"></script>
+    <script src="../assets/js/site.js"></script>
+    <script>
+      document.getElementById("y").textContent = String(new Date().getFullYear());
+    </script>
+  </body>
+</html>

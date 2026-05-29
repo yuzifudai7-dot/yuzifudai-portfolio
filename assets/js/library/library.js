@@ -69,28 +69,14 @@
     };
   }
 
-  function loadScript(src) {
-    return new Promise(function (resolve, reject) {
-      var s = document.createElement("script");
-      s.src = src;
-      s.async = true;
-      s.onload = function () {
-        resolve();
-      };
-      s.onerror = function () {
-        reject(new Error("Failed to load " + src));
-      };
-      document.head.appendChild(s);
-    });
-  }
-
-  var PDFJS_CDN_BASE = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build";
-
   function ensurePdfJs() {
     if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
-    return loadScript(PDFJS_CDN_BASE + "/pdf.min.js").then(function () {
-      if (!window.pdfjsLib) throw new Error("pdfjsLib missing");
-      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_CDN_BASE + "/pdf.worker.min.js";
+    // Vendor PDF.js into the repo to avoid CDN failures.
+    // We use the legacy ESM build and load it via dynamic import.
+    return import("/assets/vendor/pdfjs/pdf.min.mjs").then(function (mod) {
+      if (!mod) throw new Error("pdfjsLib missing");
+      window.pdfjsLib = mod;
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = "/assets/vendor/pdfjs/pdf.worker.min.mjs";
       return window.pdfjsLib;
     });
   }

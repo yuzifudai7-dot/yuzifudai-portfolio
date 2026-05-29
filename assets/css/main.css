@@ -468,6 +468,20 @@ section{margin-top:20px}
   font-size: 14px;
   font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
 }
+.ink-illus {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 2px 0 12px;
+  opacity: 0.92;
+}
+.ink-illus-wrap {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  padding: 10px 12px;
+  box-shadow: 0 12px 34px rgba(35, 31, 26, 0.06);
+}
 .chips {
   display: flex;
   gap: 8px;

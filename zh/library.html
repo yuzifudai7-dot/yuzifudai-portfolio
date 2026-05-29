@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>书架｜鱼籽福袋 · 文献札记</title>
+    <meta name="description" content="鱼籽福袋的资料书架：按年代/主题/人物导航阅读笔记与文献。" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">跳到内容</a>
+
+    <div class="shell">
+      <aside class="sidebar" aria-label="侧边栏导航">
+        <a class="brand" href="./">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <strong>鱼籽福袋 · 文献札记</strong>
+            <span>中国古代文学 · 笔记与资料</span>
+          </div>
+        </a>
+
+        <nav class="side-nav" aria-label="站点导航">
+          <a href="./#projects">发现</a>
+          <a class="active" href="./library.html">书架</a>
+          <a href="./#about">关于</a>
+          <a href="./#contact">联系</a>
+          <button type="button" id="open-access">注册 / 登录</button>
+          <a class="pill" href="../en/library.html" aria-label="切换到英文书架">EN</a>
+        </nav>
+
+        <div class="side-meta">
+          <div class="access-badge" aria-live="polite">
+            <span>访问状态</span>
+            <strong id="access-status">未解锁</strong>
+          </div>
+          <a class="side-email" href="mailto:yuzifudai7@gmail.com">
+            <span class="avatar" aria-hidden="true">Y</span>
+            <span>yuzifudai7@gmail.com</span>
+          </a>
+        </div>
+      </aside>
+
+      <div class="page">
+        <header class="topbar">
+          <div class="wrap nav">
+            <a class="brand" href="./">
+              <div class="logo" aria-hidden="true"></div>
+              <div>
+                <strong>鱼籽福袋 · 文献札记</strong>
+                <span>书架</span>
+              </div>
+            </a>
+            <nav class="navlinks">
+              <a href="./#projects">项目</a>
+              <a href="./library.html" class="pill">书架</a>
+              <a href="./#contact" class="pill">联系</a>
+              <a href="#access" class="pill" id="open-access-mobile">注册</a>
+              <a href="../en/library.html" class="pill" aria-label="Switch to English library">EN</a>
+            </nav>
+          </div>
+        </header>
+
+        <main id="content" class="wrap">
+          <div class="section-head">
+            <h2>资料书架</h2>
+            <small>按年代 / 主题 / 人物筛选；正文从 PDF 自动提取（图片页会提示打开原 PDF）</small>
+          </div>
+
+          <section class="library">
+            <div class="panel">
+              <h3>年代</h3>
+              <div class="chips" data-eras></div>
+
+              <div style="height: 10px"></div>
+              <h3>主题</h3>
+              <div class="chips" data-themes></div>
+
+              <div style="height: 10px"></div>
+              <h3>人物</h3>
+              <div class="chips" data-people></div>
+
+              <div style="height: 14px"></div>
+              <h3>文献</h3>
+              <div class="doc-list" data-docs></div>
+            </div>
+
+            <div class="panel viewer" data-viewer-wrap>
+              <div class="viewer-head">
+                <h2 data-doc-title>—</h2>
+                <div class="pager">
+                  <button class="btn" type="button" data-prev>上一页</button>
+                  <span><span data-page>1</span> / <span data-page-total>—</span></span>
+                  <button class="btn" type="button" data-next>下一页</button>
+                  <a class="btn" data-open-pdf target="_blank" rel="noreferrer">打开原 PDF</a>
+                </div>
+              </div>
+
+              <div class="search-row">
+                <input type="search" data-search placeholder="输入关键词（在当前文献内）" />
+                <button class="btn" type="button" data-search-btn>搜索</button>
+              </div>
+              <div class="search-hits" data-search-hits></div>
+
+              <div style="height: 12px"></div>
+              <div data-viewer></div>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+          <div class="wrap">
+            <div>© <span id="y"></span> 鱼籽福袋 · 文献札记</div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <div class="modal" id="access-modal" role="dialog" aria-modal="true" aria-labelledby="access-title">
+      <div class="modal-card">
+        <h3 id="access-title">注册 / 登录以解锁全部内容</h3>
+        <p class="hint">提示：这是静态站点的“轻量解锁”，用于控制展示范围，不是强安全防护。</p>
+
+        <div class="field">
+          <label for="access-email">邮箱（可选）</label>
+          <input id="access-email" type="email" autocomplete="email" placeholder="name@example.com" />
+        </div>
+        <div class="field">
+          <label for="access-code">访问码</label>
+          <input id="access-code" type="password" autocomplete="current-password" placeholder="输入访问码" />
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn primary" type="button" id="access-unlock">解锁</button>
+          <button class="btn" type="button" id="access-logout">退出</button>
+          <button class="btn" type="button" id="access-close">关闭</button>
+        </div>
+        <div class="modal-note" id="access-message" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <script src="../assets/js/library-data.js"></script>
+    <script src="../assets/js/access-config.js"></script>
+    <script src="../assets/js/site.js"></script>
+    <script src="../assets/js/library/library.js"></script>
+    <script>
+      document.getElementById("y").textContent = String(new Date().getFullYear());
+    </script>
+  </body>
+</html>
+

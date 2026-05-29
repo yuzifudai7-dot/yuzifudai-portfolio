@@ -1,0 +1,87 @@
+(function () {
+  // Document-level metadata for the Library page.
+  // You can edit `era`, `themes`, and `people` freely — it only affects navigation.
+  window.LIBRARY_DOCS = [
+    {
+      id: "notes-01-pre-qin",
+      era: "先秦",
+      title: { zh: "绪论 + 先秦", en: "Intro + Pre-Qin" },
+      pdf: "../assets/docs/notes-01-pre-qin.pdf",
+      themes: ["诸子", "史传", "诗经楚辞"],
+      people: ["孔子", "孟子", "庄子"],
+    },
+    {
+      id: "notes-02-han",
+      era: "汉代",
+      title: { zh: "第二编 汉代", en: "Han Dynasty" },
+      pdf: "../assets/docs/notes-02-han.pdf",
+      themes: ["史传", "辞赋", "乐府"],
+      people: ["司马迁", "班固"],
+    },
+    {
+      id: "notes-03-wei-jin-nanbei",
+      era: "魏晋南北朝",
+      title: { zh: "第三编 魏晋南北朝", en: "Wei–Jin & Southern/Northern" },
+      pdf: "../assets/docs/notes-03-wei-jin-nanbei.pdf",
+      themes: ["玄学", "诗歌", "志怪志人"],
+      people: ["曹植", "陶渊明"],
+    },
+    {
+      id: "notes-04-sui-tang-wudai",
+      era: "隋唐五代",
+      title: { zh: "第四编 隋唐五代", en: "Sui–Tang & Five Dynasties" },
+      pdf: "../assets/docs/notes-04-sui-tang-wudai.pdf",
+      themes: ["唐诗", "古文", "传奇"],
+      people: ["李白", "杜甫", "白居易"],
+    },
+    {
+      id: "notes-05-song",
+      era: "宋代",
+      title: { zh: "第五编 宋代", en: "Song Dynasty" },
+      pdf: "../assets/docs/notes-05-song.pdf",
+      themes: ["宋词", "散文", "话本"],
+      people: ["苏轼", "辛弃疾", "李清照"],
+    },
+    {
+      id: "notes-06-yuan",
+      era: "元代",
+      title: { zh: "第六编 元代", en: "Yuan Dynasty" },
+      pdf: "../assets/docs/notes-06-yuan.pdf",
+      themes: ["元曲", "杂剧", "散曲"],
+      people: ["关汉卿"],
+    },
+    {
+      id: "notes-07-ming",
+      era: "明代",
+      title: { zh: "第七编 明代", en: "Ming Dynasty" },
+      pdf: "../assets/docs/notes-07-ming.pdf",
+      themes: ["戏曲", "小说", "散文"],
+      people: ["汤显祖"],
+    },
+    {
+      id: "notes-08-qing",
+      era: "清代",
+      title: { zh: "第八编 清代", en: "Qing Dynasty" },
+      pdf: "../assets/docs/notes-08-qing.pdf",
+      themes: ["词", "小说", "诗文"],
+      people: ["纳兰性德", "龚自珍"],
+    },
+    {
+      id: "notes-09-modern",
+      era: "近代",
+      title: { zh: "第九编 近代", en: "Modern (Late Qing–Republic)" },
+      pdf: "../assets/docs/notes-09-modern.pdf",
+      themes: ["新文学", "思想文化"],
+      people: ["鲁迅"],
+    },
+    {
+      id: "pku-ancient-lit-notes-2023-10-01",
+      era: "总览",
+      title: { zh: "北大古代文学考研基础笔记（合集）", en: "PKU Ancient Literature Notes (Compiled)" },
+      pdf: "../assets/docs/pku-ancient-lit-notes-2023-10-01.pdf",
+      themes: ["总览", "目录", "复习"],
+      people: [],
+    },
+  ];
+})();
+

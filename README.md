@@ -51,6 +51,19 @@ This site uses a lightweight front-end unlock (no real accounts / no database).
 
 To change the access code, replace the `hash` with `SHA-256("your-new-code")`.
 
+## Library (PDF → text + navigation)
+
+The Library pages extract text from PDFs in the browser using PDF.js (loaded from a CDN).
+
+- Chinese: `./zh/library.html`
+- English: `./en/library.html`
+- Document metadata (era/theme/people): `assets/js/library-data.js`
+
+Notes:
+
+- Pages that are mostly handwriting/photos may not have extractable text; the UI will link you to the original PDF page.
+- Search is fast but currently only searches pages you’ve already opened (the page cache grows as you browse).
+
 ## PDFs
 
 Your PDFs are stored under `assets/docs/` and linked as projects.

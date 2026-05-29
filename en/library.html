@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Library｜Yuzifudai · Folio</title>
+    <meta name="description" content="A reading library with era/theme/person navigation for the notes PDFs." />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <div class="shell">
+      <aside class="sidebar" aria-label="Sidebar navigation">
+        <a class="brand" href="./">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <strong>Yuzifudai · Folio</strong>
+            <span>Chinese Literature · Notes & Materials</span>
+          </div>
+        </a>
+
+        <nav class="side-nav" aria-label="Site navigation">
+          <a href="./#projects">Explore</a>
+          <a class="active" href="./library.html">Library</a>
+          <a href="./#about">About</a>
+          <a href="./#contact">Contact</a>
+          <button type="button" id="open-access">Register / Sign in</button>
+          <a class="pill" href="../zh/library.html" aria-label="Switch to Chinese library">中文</a>
+        </nav>
+
+        <div class="side-meta">
+          <div class="access-badge" aria-live="polite">
+            <span>Access</span>
+            <strong id="access-status">Locked</strong>
+          </div>
+          <a class="side-email" href="mailto:yuzifudai7@gmail.com">
+            <span class="avatar" aria-hidden="true">Y</span>
+            <span>yuzifudai7@gmail.com</span>
+          </a>
+        </div>
+      </aside>
+
+      <div class="page">
+        <header class="topbar">
+          <div class="wrap nav">
+            <a class="brand" href="./">
+              <div class="logo" aria-hidden="true"></div>
+              <div>
+                <strong>Yuzifudai · Folio</strong>
+                <span>Library</span>
+              </div>
+            </a>
+            <nav class="navlinks">
+              <a href="./#projects">Projects</a>
+              <a href="./library.html" class="pill">Library</a>
+              <a href="./#contact" class="pill">Contact</a>
+              <a href="#access" class="pill" id="open-access-mobile">Register</a>
+              <a href="../zh/library.html" class="pill" aria-label="切换到中文书架">中文</a>
+            </nav>
+          </div>
+        </header>
+
+        <main id="content" class="wrap">
+          <div class="section-head">
+            <h2>Reading Library</h2>
+            <small>Filter by era/theme/person; text is extracted from PDFs in-browser (image pages link to the PDF)</small>
+          </div>
+
+          <section class="library">
+            <div class="panel">
+              <h3>Era</h3>
+              <div class="chips" data-eras></div>
+
+              <div style="height: 10px"></div>
+              <h3>Themes</h3>
+              <div class="chips" data-themes></div>
+
+              <div style="height: 10px"></div>
+              <h3>People</h3>
+              <div class="chips" data-people></div>
+
+              <div style="height: 14px"></div>
+              <h3>Documents</h3>
+              <div class="doc-list" data-docs></div>
+            </div>
+
+            <div class="panel viewer" data-viewer-wrap>
+              <div class="viewer-head">
+                <h2 data-doc-title>—</h2>
+                <div class="pager">
+                  <button class="btn" type="button" data-prev>Prev</button>
+                  <span><span data-page>1</span> / <span data-page-total>—</span></span>
+                  <button class="btn" type="button" data-next>Next</button>
+                  <a class="btn" data-open-pdf target="_blank" rel="noreferrer">Open original PDF</a>
+                </div>
+              </div>
+
+              <div class="search-row">
+                <input type="search" data-search placeholder="Type keywords (within current document)" />
+                <button class="btn" type="button" data-search-btn>Search</button>
+              </div>
+              <div class="search-hits" data-search-hits></div>
+
+              <div style="height: 12px"></div>
+              <div data-viewer></div>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+          <div class="wrap">
+            <div>© <span id="y"></span> Yuzifudai · Folio</div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <div class="modal" id="access-modal" role="dialog" aria-modal="true" aria-labelledby="access-title">
+      <div class="modal-card">
+        <h3 id="access-title">Register / Sign in to unlock full content</h3>
+        <p class="hint">Note: This is a lightweight static “unlock” for display control, not strong security.</p>
+
+        <div class="field">
+          <label for="access-email">Email (optional)</label>
+          <input id="access-email" type="email" autocomplete="email" placeholder="name@example.com" />
+        </div>
+        <div class="field">
+          <label for="access-code">Access code</label>
+          <input id="access-code" type="password" autocomplete="current-password" placeholder="Enter access code" />
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn primary" type="button" id="access-unlock">Unlock</button>
+          <button class="btn" type="button" id="access-logout">Log out</button>
+          <button class="btn" type="button" id="access-close">Close</button>
+        </div>
+        <div class="modal-note" id="access-message" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <script src="../assets/js/library-data.js"></script>
+    <script src="../assets/js/access-config.js"></script>
+    <script src="../assets/js/site.js"></script>
+    <script src="../assets/js/library/library.js"></script>
+    <script>
+      document.getElementById("y").textContent = String(new Date().getFullYear());
+    </script>
+  </body>
+</html>
+

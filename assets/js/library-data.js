@@ -77,7 +77,7 @@
     {
       id: "pku-ancient-lit-notes-2023-10-01",
       era: "总览",
-      title: { zh: "北大古代文学基础笔记（合集）", en: "PKU Ancient Literature Notes (Compiled)" },
+      title: { zh: "古代文学资料汇编（合集）", en: "Ancient Literature Compendium (Compiled)" },
       pdf: "../assets/docs/pku-ancient-lit-notes-2023-10-01.pdf",
       themes: ["总览", "目录", "参考"],
       people: [],

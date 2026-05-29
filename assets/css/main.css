@@ -447,8 +447,8 @@ section{margin-top:20px}
 /* Library */
 .library {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 18px;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 22px;
   align-items: start;
 }
 @media (max-width: 980px) {
@@ -458,14 +458,17 @@ section{margin-top:20px}
 }
 .panel {
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.62);
   border-radius: var(--radius);
   box-shadow: var(--shadow2);
-  padding: 14px;
+  padding: 16px;
+}
+.panel.viewer {
+  padding: 20px 24px;
 }
 .panel h3 {
   margin: 0 0 10px;
-  font-size: 14px;
+  font-size: 18px;
   font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
 }
 .ink-illus {
@@ -525,7 +528,7 @@ section{margin-top:20px}
 }
 .chips {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 .chip-btn {
@@ -533,7 +536,7 @@ section{margin-top:20px}
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.46);
   color: var(--muted);
-  padding: 8px 10px;
+  padding: 9px 12px;
   border-radius: 999px;
   cursor: pointer;
   font: inherit;
@@ -547,7 +550,10 @@ section{margin-top:20px}
 .doc-list {
   display: grid;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 14px;
+  max-height: 260px;
+  overflow: auto;
+  padding-right: 4px;
 }
 .doc-btn {
   appearance: none;
@@ -575,18 +581,19 @@ section{margin-top:20px}
   background: rgba(255, 255, 255, 0.74);
 }
 .viewer {
-  min-height: 420px;
+  min-height: 560px;
 }
 .viewer-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 .viewer-head h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 26px;
+  line-height: 1.2;
   font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
 }
 .pager {
@@ -603,16 +610,77 @@ section{margin-top:20px}
   cursor: not-allowed;
 }
 .viewer-text {
-  margin: 0;
+  margin: 0 0 14px;
   white-space: pre-wrap;
   word-break: break-word;
   font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
-  font-size: 14px;
-  line-height: 1.85;
+  font-size: 20px;
+  line-height: 1.95;
+  letter-spacing: 0.01em;
   color: rgba(35, 31, 26, 0.88);
+  border-left: 2px solid rgba(108, 75, 42, 0.18);
+  padding-left: 12px;
 }
 .viewer-hint p {
   margin: 0 0 10px;
+}
+.reader-article {
+  max-width: 1060px;
+}
+.term-hl {
+  background: linear-gradient(transparent 60%, rgba(176, 140, 98, 0.4) 0);
+  color: #231f1a;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+.topic-intro {
+  border: 1px solid rgba(108, 75, 42, 0.18);
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 18px;
+  padding: 16px;
+}
+.topic-intro-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.topic-intro-head h3 {
+  margin: 0;
+  font-size: 24px;
+  font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
+}
+.topic-badge {
+  border: 1px solid rgba(108, 75, 42, 0.24);
+  background: rgba(108, 75, 42, 0.1);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+.topic-meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.topic-illus img {
+  width: 100%;
+  max-width: 480px;
+  display: block;
+}
+.topic-illus p {
+  margin: 6px 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.topic-summary {
+  margin-bottom: 10px;
+}
+.topic-snippets p {
+  margin: 0 0 8px;
+  line-height: 1.7;
+}
+.topic-enter {
+  margin-top: 8px;
 }
 .viewer-locked {
   padding: 22px;

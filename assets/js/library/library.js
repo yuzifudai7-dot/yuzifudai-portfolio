@@ -32,6 +32,12 @@
         qaDifference: "差异点",
         qaEvidence: "证据摘录",
         qaPromptHint: "你也可以问：A和B的相似性？A和B的区别？",
+        topicStart: "专题起始页",
+        topicIntro: "关键词导读",
+        topicGoto: "进入正文",
+        topicNoMatch: "当前文献中暂未直接命中该关键词，已定位到该文献开头页。",
+        topicFound: "已命中关键词页",
+        pageLabel: "页码",
         illusDefault: "文献场景线稿",
         illusEra: "年代线索场景",
         illusTheme: "主题相关场景",
@@ -61,6 +67,12 @@
       qaDifference: "Differences",
       qaEvidence: "Evidence snippets",
       qaPromptHint: "You can ask: similarities between A and B, or differences between A and B.",
+      topicStart: "Topic Start",
+      topicIntro: "Keyword Overview",
+      topicGoto: "Enter Reading",
+      topicNoMatch: "No direct keyword hit in this document yet. Jumped to document start page.",
+      topicFound: "First hit page",
+      pageLabel: "Page",
       illusDefault: "Literary scene line art",
       illusEra: "Era scene line art",
       illusTheme: "Theme scene line art",
@@ -144,9 +156,10 @@
     var txt = String(raw);
     txt = txt.replace(/免费分享请勿商用/g, "");
     txt = txt.replace(/整理[:：]\s*微博@?辞琛/g, "来源：微博@辞琛");
-    txt = txt.replace(/北大古代文学考研基础笔记/g, "北大古代文学基础笔记");
-    txt = txt.replace(/考研基础笔记/g, "基础笔记");
+    txt = txt.replace(/北大古代文学(?:考研)?基础笔记/g, "");
+    txt = txt.replace(/[\/｜|·\s]*来源[:：]\s*微博@?辞琛/g, "来源：微博@辞琛");
     txt = txt.replace(/\n{3,}/g, "\n\n");
+    txt = txt.replace(/^\s*来源[:：]\s*微博@?辞琛\s*$/gm, "来源：微博@辞琛");
     return txt;
   }
 
@@ -248,6 +261,7 @@
       q: "",
       activeKeywordType: "",
       activeKeywordValue: "",
+      topicIntroData: null,
     };
 
     var eraValues = uniq(docs.map(function (d) { return d.era; }));
@@ -292,7 +306,8 @@
       if (!raw) return;
       var params = new URLSearchParams(raw);
       st.docId = params.get("doc") || st.docId;
-      st.page = parseInt(params.get("p") || String(st.page), 10) || 1;
+      var parsed = parseInt(params.get("p") || String(st.page), 10);
+      st.page = Number.isFinite(parsed) && parsed >= 0 ? parsed : 1;
       st.era = params.get("era") || "";
       st.theme = params.get("theme") || "";
       st.person = params.get("person") || "";
@@ -319,6 +334,38 @@
       if (type !== "era") st.era = "";
       if (type !== "theme") st.theme = "";
       if (type !== "person") st.person = "";
+    }
+
+    function clearTopicIntro() {
+      st.topicIntroData = null;
+      if (st.page === 0) st.page = 1;
+    }
+
+    function escapeRegExp(str) {
+      return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function getHighlightTerms() {
+      var terms = [];
+      if (st.activeKeywordValue) terms.push(st.activeKeywordValue);
+      if (st.q) {
+        buildTerms(st.q, [st.activeKeywordValue]).forEach(function (t) {
+          if (t && t.length >= 2) terms.push(t);
+        });
+      }
+      return uniq(terms).slice(0, 8);
+    }
+
+    function highlightHtml(text, terms) {
+      var html = escapeHtml(text || "");
+      (terms || []).forEach(function (term) {
+        if (!term) return;
+        var re = new RegExp(escapeRegExp(term), "gi");
+        html = html.replace(re, function (m) {
+          return "<mark class=\"term-hl\">" + m + "</mark>";
+        });
+      });
+      return html;
     }
 
     function updateIllustration() {
@@ -353,6 +400,7 @@
           st.activeKeywordType = "";
           st.activeKeywordValue = "";
         }
+        clearTopicIntro();
         st.page = 1;
         renderDocList();
         renderPage();
@@ -397,6 +445,7 @@
         btn.addEventListener("click", function () {
           st.docId = d.id;
           st.page = 1;
+          clearTopicIntro();
           if (elSearch) elSearch.value = "";
           if (elSearchHits) elSearchHits.textContent = "";
           renderDocList();
@@ -452,26 +501,48 @@
       var limit = previewLimit();
       return loadPdf(doc).then(function (pdf) {
         var max = Math.min(pdf.numPages || 0, limit);
-        if (!max) return 1;
+        if (!max) return { firstPage: 1, hits: [] };
         var p = Promise.resolve(1);
         var found = 1;
+        var hits = [];
         for (var i = 1; i <= max; i++) {
           (function (pageNo) {
             p = p.then(function () {
               return extractPageText(doc, pageNo).then(function (payload) {
-                if (found !== 1) return;
                 var text = payload && payload.text ? payload.text : "";
                 if (text.indexOf(keyword) !== -1) {
-                  found = pageNo;
+                  if (found === 1) found = pageNo;
+                  if (hits.length < 4) {
+                    hits.push({
+                      page: pageNo,
+                      snippet: snippetAround(text, keyword, [keyword]),
+                    });
+                  }
                 }
               });
             });
           })(i);
         }
         return p.then(function () {
-          return found;
+          return { firstPage: found, hits: hits };
         });
       });
+    }
+
+    function buildTopicIntro(type, keyword, doc, keywordResult) {
+      var result = keywordResult || { firstPage: 1, hits: [] };
+      var firstPage = result.firstPage || 1;
+      var hasMatch = result.hits && result.hits.length > 0;
+      var tone = type === "person" ? tx.illusPerson : (type === "theme" ? tx.illusTheme : tx.illusEra);
+      return {
+        type: type,
+        keyword: keyword,
+        doc: doc,
+        firstPage: firstPage,
+        hasMatch: hasMatch,
+        snippets: (result.hits || []).slice(0, 3),
+        caption: tone + " · " + keyword,
+      };
     }
 
     function jumpToKeyword(type, value) {
@@ -495,17 +566,27 @@
       st.docId = filtered[0].id;
       updateIllustration();
 
-      // For theme/person, jump to the first matching page inside the selected document.
-      if (value && (type === "theme" || type === "person")) {
+      if (!value) {
+        clearTopicIntro();
+        renderDocList();
+        renderPage();
+        setHash();
+        return;
+      }
+
+      // Build a topic-start page first, then jump to text from the first matched page.
+      if (value && (type === "theme" || type === "person" || type === "era")) {
         findFirstPageWithKeyword(filtered[0], value)
-          .then(function (pageNo) {
-            st.page = pageNo || 1;
+          .then(function (result) {
+            st.topicIntroData = buildTopicIntro(type, value, filtered[0], result);
+            st.page = 0;
             renderDocList();
             renderPage();
             setHash();
           })
           .catch(function () {
-            st.page = 1;
+            st.topicIntroData = buildTopicIntro(type, value, filtered[0], { firstPage: 1, hits: [] });
+            st.page = 0;
             renderDocList();
             renderPage();
             setHash();
@@ -541,14 +622,68 @@
       elViewer.appendChild(wrap);
     }
 
+    function renderTopicIntro() {
+      if (!elViewer || !st.topicIntroData) return;
+      var intro = st.topicIntroData;
+      var html = "<article class=\"topic-intro\">";
+      html += "<div class=\"topic-intro-head\">";
+      html += "<span class=\"topic-badge\">" + escapeHtml(tx.topicStart) + "</span>";
+      html += "<h3>" + escapeHtml(intro.keyword) + "</h3>";
+      html += "</div>";
+      html += "<div class=\"topic-meta\">" + escapeHtml(textByLocale(intro.doc.title, locale)) + "</div>";
+      html += "<div class=\"topic-illus\">";
+      if (intro.type === "person") {
+        html += "<img src=\"../assets/img/ink/portrait.svg\" alt=\"" + escapeHtml(intro.keyword) + "\" />";
+      } else if (intro.type === "era") {
+        html += "<img src=\"../assets/img/ink/mountain.svg\" alt=\"" + escapeHtml(intro.keyword) + "\" />";
+      } else {
+        html += "<img src=\"../assets/img/ink/scroll.svg\" alt=\"" + escapeHtml(intro.keyword) + "\" />";
+      }
+      html += "<p>" + escapeHtml(intro.caption) + "</p></div>";
+      html += "<div class=\"topic-summary\"><b>" + escapeHtml(tx.topicIntro) + "：</b>";
+      if (intro.hasMatch) {
+        html += "<span>" + escapeHtml(tx.topicFound) + " " + intro.firstPage + "</span>";
+      } else {
+        html += "<span>" + escapeHtml(tx.topicNoMatch) + "</span>";
+      }
+      html += "</div>";
+      if (intro.snippets && intro.snippets.length) {
+        html += "<div class=\"topic-snippets\">";
+        intro.snippets.forEach(function (item, idx) {
+          html += "<p><b>" + (idx + 1) + ".</b> " + highlightHtml(item.snippet, [intro.keyword]) + "</p>";
+        });
+        html += "</div>";
+      }
+      html += "<button type=\"button\" class=\"btn primary topic-enter\" data-topic-enter>" + escapeHtml(tx.topicGoto) + "</button>";
+      html += "</article>";
+      elViewer.innerHTML = html;
+
+      var enterBtn = elViewer.querySelector("[data-topic-enter]");
+      if (enterBtn) {
+        enterBtn.addEventListener("click", function () {
+          st.page = intro.firstPage || 1;
+          renderPage();
+          setHash();
+        });
+      }
+    }
+
     function renderViewerText(payload, doc) {
       if (!elViewer) return;
       elViewer.innerHTML = "";
 
       if (payload && payload.hasText) {
-        var pre = el("pre", "viewer-text");
-        pre.textContent = payload.text;
-        elViewer.appendChild(pre);
+        var terms = getHighlightTerms();
+        var blocks = String(payload.text).split(/\n{2,}/).filter(function (x) { return x.trim(); });
+        var article = document.createElement("article");
+        article.className = "reader-article";
+        blocks.forEach(function (blk) {
+          var p = document.createElement("p");
+          p.className = "viewer-text";
+          p.innerHTML = highlightHtml(blk, terms);
+          article.appendChild(p);
+        });
+        elViewer.appendChild(article);
         return;
       }
 
@@ -570,11 +705,18 @@
       var c = getDocCache(doc.id);
 
       if (elDocTitle) elDocTitle.textContent = textByLocale(doc.title, locale);
-      if (elPage) elPage.textContent = String(st.page);
-      if (elPageTotal) elPageTotal.textContent = c.numPages ? String(c.numPages) : "—";
+      if (elPage) elPage.textContent = st.page === 0 ? tx.topicStart : String(st.page);
+      if (elPageTotal) elPageTotal.textContent = st.page === 0 ? "—" : (c.numPages ? String(c.numPages) : "—");
       if (elOpenPdf) {
         elOpenPdf.textContent = tx.openPdf;
         elOpenPdf.href = doc.pdf + "#page=" + String(st.page);
+      }
+
+      if (st.page === 0 && st.topicIntroData) {
+        if (elPrev) elPrev.disabled = true;
+        if (elNext) elNext.disabled = false;
+        renderTopicIntro();
+        return;
       }
 
       var isPreviewAllowed = st.page <= previewLimit();
@@ -605,6 +747,7 @@
     function searchInDoc() {
       var q = (elSearch && elSearch.value ? String(elSearch.value) : "").trim();
       st.q = q;
+      clearTopicIntro();
       if (!q) {
         if (elSearchHits) elSearchHits.textContent = "";
         return;
@@ -870,6 +1013,12 @@
     }
     if (elNext) {
       elNext.addEventListener("click", function () {
+        if (st.page === 0 && st.topicIntroData) {
+          st.page = st.topicIntroData.firstPage || 1;
+          renderPage();
+          setHash();
+          return;
+        }
         st.page = st.page + 1;
         renderPage();
         setHash();

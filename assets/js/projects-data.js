@@ -3,10 +3,10 @@
 window.PORTFOLIO_PROJECTS = [
   {
     id: "pku-ancient-lit-notes",
-    title: { en: "PKU Ancient Chinese Literature Notes (2023-10-01)", zh: "北大古代文学基础笔记（2023-10-01）" },
+    title: { en: "Ancient Chinese Literature Compendium (2023-10-01)", zh: "古代文学资料汇编（2023-10-01）" },
     description: {
       en: "Core notes for Ancient Chinese Literature, organized into a clear and reusable structure.",
-      zh: "北大古代文学基础笔记：整理为结构化提纲，便于系统阅读与检索。",
+      zh: "古代文学资料汇编：整理为结构化提纲，便于系统阅读与检索。",
     },
     tags: ["Notes", "Compendium", "Chinese Literature"],
     links: [

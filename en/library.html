@@ -69,8 +69,9 @@
 
           <section class="library">
             <div class="panel">
-              <div class="ink-illus-wrap" aria-hidden="true">
-                <img class="ink-illus" src="../assets/img/ink/mountain.svg" alt="" />
+              <div class="ink-illus-wrap">
+                <img class="ink-illus" src="../assets/img/ink/mountain.svg" alt="Keyword-based line-art illustration" data-illus />
+                <div class="ink-illus-caption" data-illus-caption>Literary scene line art</div>
               </div>
               <h3>Era</h3>
               <div class="chips" data-eras></div>
@@ -86,6 +87,14 @@
               <div style="height: 14px"></div>
               <h3>Documents</h3>
               <div class="doc-list" data-docs></div>
+
+              <div style="height: 14px"></div>
+              <h3>AI Q&A (site content)</h3>
+              <div class="qa-box">
+                <textarea class="qa-input" data-qa-input placeholder="Ask a question, e.g. What defines Su Shi's ci style?"></textarea>
+                <button class="btn primary" type="button" data-qa-ask>Ask</button>
+                <div class="qa-answer" data-qa-answer>Answers are generated from currently filtered documents.</div>
+              </div>
             </div>
 
             <div class="panel viewer" data-viewer-wrap>

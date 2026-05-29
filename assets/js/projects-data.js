@@ -3,12 +3,12 @@
 window.PORTFOLIO_PROJECTS = [
   {
     id: "pku-ancient-lit-notes",
-    title: { en: "PKU Ancient Chinese Literature Notes (2023-10-01)", zh: "北大古代文学考研基础笔记（2023-10-01）" },
+    title: { en: "PKU Ancient Chinese Literature Notes (2023-10-01)", zh: "北大古代文学基础笔记（2023-10-01）" },
     description: {
-      en: "Core notes for the PKU Ancient Chinese Literature exam: compiled and structured for fast review.",
-      zh: "北大古代文学考研基础笔记：整理成结构化提纲，便于快速复习。",
+      en: "Core notes for Ancient Chinese Literature, organized into a clear and reusable structure.",
+      zh: "北大古代文学基础笔记：整理为结构化提纲，便于系统阅读与检索。",
     },
-    tags: ["Notes", "Exam", "Chinese Literature"],
+    tags: ["Notes", "Compendium", "Chinese Literature"],
     links: [
       { label: { en: "PDF", zh: "PDF" }, href: "../assets/docs/pku-ancient-lit-notes-2023-10-01.pdf" },
     ],
@@ -27,8 +27,8 @@ window.PORTFOLIO_PROJECTS = [
     id: "notes-02-han",
     title: { en: "Notes 02 — Han Dynasty", zh: "第二编 汉代" },
     description: {
-      en: "Han literature: authors, genres, and exam-ready highlights.",
-      zh: "汉代文学：作家、文体与考点梳理。",
+      en: "Han literature: authors, genres, and key highlights.",
+      zh: "汉代文学：作家、文体与重点梳理。",
     },
     tags: ["Han", "Outline"],
     links: [{ label: { en: "PDF", zh: "PDF" }, href: "../assets/docs/notes-02-han.pdf" }],
@@ -47,7 +47,7 @@ window.PORTFOLIO_PROJECTS = [
     id: "notes-04-sui-tang-wudai",
     title: { en: "Notes 04 — Sui-Tang & Five Dynasties", zh: "第四编 隋唐五代" },
     description: {
-      en: "Tang literature: poetry, prose, and exam-focused summaries.",
+      en: "Sui-Tang and Five Dynasties literature: poetry, prose, and focused summaries.",
       zh: "隋唐五代文学：诗歌、散文与重点总结。",
     },
     tags: ["Tang", "Outline"],
@@ -77,8 +77,8 @@ window.PORTFOLIO_PROJECTS = [
     id: "notes-07-ming",
     title: { en: "Notes 07 — Ming Dynasty", zh: "第七编 明代" },
     description: {
-      en: "Ming literature: major works, genres, and exam notes.",
-      zh: "明代文学：重要作品、文体与考点梳理。",
+      en: "Ming literature: major works, genres, and contextual notes.",
+      zh: "明代文学：重要作品、文体与重点梳理。",
     },
     tags: ["Ming", "Outline"],
     links: [{ label: { en: "PDF", zh: "PDF" }, href: "../assets/docs/notes-07-ming.pdf" }],

@@ -69,8 +69,9 @@
 
           <section class="library">
             <div class="panel">
-              <div class="ink-illus-wrap" aria-hidden="true">
-                <img class="ink-illus" src="../assets/img/ink/scroll.svg" alt="" />
+              <div class="ink-illus-wrap">
+                <img class="ink-illus" src="../assets/img/ink/scroll.svg" alt="关键词对应线条插画" data-illus />
+                <div class="ink-illus-caption" data-illus-caption>文献场景线稿</div>
               </div>
               <h3>年代</h3>
               <div class="chips" data-eras></div>
@@ -86,6 +87,14 @@
               <div style="height: 14px"></div>
               <h3>文献</h3>
               <div class="doc-list" data-docs></div>
+
+              <div style="height: 14px"></div>
+              <h3>AI 问答（站内内容）</h3>
+              <div class="qa-box">
+                <textarea class="qa-input" data-qa-input placeholder="输入你的问题，例如：苏轼词风的核心特征是什么？"></textarea>
+                <button class="btn primary" type="button" data-qa-ask>提问</button>
+                <div class="qa-answer" data-qa-answer>会基于当前筛选范围和文献内容作答。</div>
+              </div>
             </div>
 
             <div class="panel viewer" data-viewer-wrap>

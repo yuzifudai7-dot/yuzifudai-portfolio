@@ -26,6 +26,12 @@
         qaPageUnit: "第",
         qaPageSuffix: "页",
         qaEmpty: "请输入问题。",
+        qaNoEnough: "站内相关证据不足，先不做武断结论。你可以换一个更具体的问题或先切换到相关人物/主题。",
+        qaSummary: "简要回答",
+        qaSimilarity: "共同点",
+        qaDifference: "差异点",
+        qaEvidence: "证据摘录",
+        qaPromptHint: "你也可以问：A和B的相似性？A和B的区别？",
         illusDefault: "文献场景线稿",
         illusEra: "年代线索场景",
         illusTheme: "主题相关场景",
@@ -49,6 +55,12 @@
       qaPageUnit: "p.",
       qaPageSuffix: "",
       qaEmpty: "Please enter a question.",
+      qaNoEnough: "Not enough evidence in the current site content to answer confidently.",
+      qaSummary: "Short answer",
+      qaSimilarity: "Similarities",
+      qaDifference: "Differences",
+      qaEvidence: "Evidence snippets",
+      qaPromptHint: "You can ask: similarities between A and B, or differences between A and B.",
       illusDefault: "Literary scene line art",
       illusEra: "Era scene line art",
       illusTheme: "Theme scene line art",
@@ -169,29 +181,52 @@
     return count;
   }
 
-  function buildTerms(q) {
-    var terms = [q];
-    String(q)
-      .split(/[\s,，。；;、!?？！]+/)
+  function buildTerms(q, anchors) {
+    var question = String(q || "").trim();
+    var stopWords = [
+      "如何", "怎么", "怎样", "什么", "哪些", "为什么", "对比", "比较", "区别", "差异", "异同", "相似", "相同", "共同", "看待", "关于",
+      "可以", "能否", "请问", "一下", "这个", "那个", "还有", "以及", "对于",
+      "what", "how", "why", "compare", "comparison", "difference", "differences", "similar", "similarity", "between", "about",
+    ];
+    var terms = [];
+    String(question)
+      .replace(/[“”"‘’'()（）【】\[\]<>《》]/g, " ")
+      .split(/[\s,，。；;、!?？！:+\-\\/|]+/)
       .map(function (x) { return x.trim(); })
       .filter(function (x) { return x.length >= 2; })
-      .forEach(function (x) { terms.push(x); });
+      .forEach(function (x) {
+        if (stopWords.indexOf(x.toLowerCase()) !== -1) return;
+        terms.push(x);
+      });
+
+    (anchors || []).forEach(function (x) {
+      if (x && String(question).indexOf(x) !== -1) terms.push(x);
+    });
+
+    // keep the whole question as a low-priority fuzzy term only when short
+    if (question.length >= 2 && question.length <= 16) terms.push(question);
     return uniq(terms);
   }
 
-  function scoreText(text, q) {
-    var terms = buildTerms(q);
+  function scoreText(text, q, anchors) {
+    var terms = buildTerms(q, anchors);
     var score = 0;
-    terms.forEach(function (term, i) {
-      var weight = i === 0 ? 4 : 1;
-      score += countOccurrences(text, term) * weight;
+    terms.forEach(function (term) {
+      var base = term.length >= 3 ? 2 : 1;
+      score += countOccurrences(text, term) * base;
+    });
+    (anchors || []).forEach(function (anchor) {
+      score += countOccurrences(text, anchor) * 4;
     });
     return score;
   }
 
-  function snippetAround(text, q) {
+  function snippetAround(text, q, anchors) {
     if (!text) return "";
     var idx = text.indexOf(q);
+    if (idx === -1 && anchors && anchors.length) {
+      idx = text.indexOf(anchors[0]);
+    }
     if (idx === -1) idx = 0;
     var start = Math.max(0, idx - 70);
     var end = Math.min(text.length, idx + 170);
@@ -218,6 +253,7 @@
     var eraValues = uniq(docs.map(function (d) { return d.era; }));
     var themeValues = uniq(docs.flatMap(function (d) { return d.themes || []; }));
     var peopleValues = uniq(docs.flatMap(function (d) { return d.people || []; }));
+    var qaVocab = uniq([].concat(peopleValues, themeValues, eraValues));
 
     var elEras = document.querySelector("[data-eras]");
     var elThemes = document.querySelector("[data-themes]");
@@ -610,32 +646,188 @@
         });
     }
 
-    function renderAnswerHtml(results) {
+    function detectQuestionIntent(q) {
+      var lower = String(q || "").toLowerCase();
+      var isCompare = /(对比|比较|异同|区别|差异|相似|相同|共同|compare|similar|difference|vs)/i.test(lower);
+      var isDiff = /(区别|差异|不同|difference|different)/i.test(lower);
+      var isSimilar = /(相似|相同|共同|similar|same)/i.test(lower);
+      if (isCompare) {
+        if (isDiff) return "difference";
+        if (isSimilar) return "similarity";
+        return "compare";
+      }
+      return "general";
+    }
+
+    function extractAnchors(question) {
+      var q = String(question || "");
+      var matches = qaVocab.filter(function (v) {
+        return v && q.indexOf(v) !== -1;
+      });
+      matches.sort(function (a, b) { return b.length - a.length; });
+      var deduped = [];
+      matches.forEach(function (term) {
+        var covered = deduped.some(function (x) { return x.indexOf(term) !== -1; });
+        if (!covered) deduped.push(term);
+      });
+      return deduped.slice(0, 6);
+    }
+
+    function formatRef(hit) {
+      return escapeHtml(textByLocale(hit.doc.title, locale)) + " " + tx.qaPageUnit + hit.page + tx.qaPageSuffix;
+    }
+
+    function docProfileForPerson(person, candidates) {
+      var related = candidates.filter(function (d) {
+        return Array.isArray(d.people) && d.people.indexOf(person) !== -1;
+      });
+      var eras = uniq(related.map(function (d) { return d.era; }));
+      var themes = uniq(
+        related.flatMap(function (d) { return d.themes || []; })
+      );
+      return { eras: eras, themes: themes };
+    }
+
+    function collectQAHits(question, candidates, anchors) {
+      var hitsPromise = Promise.resolve([]);
+      var maxPagesPerDoc = isUnlocked() ? 80 : previewLimit();
+
+      candidates.forEach(function (doc) {
+        hitsPromise = hitsPromise.then(function (acc) {
+          return loadPdf(doc).then(function (pdf) {
+            var limit = Math.min(pdf.numPages || 0, maxPagesPerDoc);
+            var scan = Promise.resolve();
+            for (var i = 1; i <= limit; i++) {
+              (function (pageNo) {
+                scan = scan.then(function () {
+                  return extractPageText(doc, pageNo).then(function (payload) {
+                    var txt = payload && payload.text ? payload.text : "";
+                    if (!txt) return;
+                    var score = scoreText(txt, question, anchors);
+                    if (score <= 0) return;
+                    var matchedAnchors = (anchors || []).filter(function (a) {
+                      return txt.indexOf(a) !== -1;
+                    });
+                    acc.push({
+                      doc: doc,
+                      page: pageNo,
+                      score: score,
+                      snippet: snippetAround(txt, question, matchedAnchors),
+                      matchedAnchors: matchedAnchors,
+                    });
+                  });
+                });
+              })(i);
+            }
+            return scan.then(function () { return acc; });
+          });
+        });
+      });
+
+      return hitsPromise.then(function (hits) {
+        hits.sort(function (a, b) { return b.score - a.score; });
+        return hits;
+      });
+    }
+
+    function renderNoEnough() {
       if (!elQaAnswer) return;
-      if (!results.length) {
-        elQaAnswer.textContent = tx.noDataForQA;
+      elQaAnswer.innerHTML =
+        "<div class=\"qa-title\">" +
+        escapeHtml(tx.qaTitle) +
+        "</div><div class=\"qa-body\"><p>" +
+        escapeHtml(tx.qaNoEnough) +
+        "</p><p>" +
+        escapeHtml(tx.qaPromptHint) +
+        "</p></div>";
+    }
+
+    function renderGeneralAnswer(question, hits) {
+      if (!elQaAnswer) return;
+      if (!hits.length) {
+        renderNoEnough();
+        return;
+      }
+      var top = hits.slice(0, 3);
+      var summary = locale === "zh"
+        ? ("根据站内已检索内容，与你的问题“" + question + "”最相关的信息集中在以下段落：")
+        : ("Based on the indexed site content, the most relevant passages for \"" + question + "\" are:");
+
+      var html = "<div class=\"qa-title\">" + escapeHtml(tx.qaTitle) + "</div>";
+      html += "<div class=\"qa-body\"><p><b>" + escapeHtml(tx.qaSummary) + "：</b>" + escapeHtml(summary) + "</p>";
+      html += "<div><b>" + escapeHtml(tx.qaEvidence) + "：</b>";
+      top.forEach(function (hit, idx) {
+        html += "<p><b>" + (idx + 1) + ".</b> " + escapeHtml(hit.snippet) + "</p>";
+      });
+      html += "</div></div>";
+      html += "<div class=\"qa-refs\"><b>" + escapeHtml(tx.qaRefs) + "：</b>" + top.map(formatRef).join("；") + "</div>";
+      elQaAnswer.innerHTML = html;
+    }
+
+    function renderCompareAnswer(question, intent, anchors, hits, candidates) {
+      if (!elQaAnswer) return;
+      if (!hits.length || anchors.length < 2) {
+        renderGeneralAnswer(question, hits);
         return;
       }
 
-      var html = "<div class=\"qa-title\">" + escapeHtml(tx.qaTitle) + "</div>";
-      html += "<div class=\"qa-body\">";
-      results.forEach(function (r, idx) {
-        html +=
-          "<p><b>" +
-          String(idx + 1) +
-          ".</b> " +
-          escapeHtml(r.snippet) +
-          "</p>";
+      var entities = anchors.slice(0, 2);
+      var byEntity = {};
+      entities.forEach(function (e) {
+        byEntity[e] = hits.filter(function (h) {
+          return h.matchedAnchors.indexOf(e) !== -1;
+        });
       });
-      html += "</div>";
-      html += "<div class=\"qa-refs\"><b>" + escapeHtml(tx.qaRefs) + "：</b>";
-      html += results
-        .map(function (r) {
-          return escapeHtml(textByLocale(r.doc.title, locale)) + " " + tx.qaPageUnit + r.page + tx.qaPageSuffix;
-        })
-        .join("；");
-      html += "</div>";
 
+      if (!byEntity[entities[0]].length && !byEntity[entities[1]].length) {
+        renderNoEnough();
+        return;
+      }
+
+      var profileA = docProfileForPerson(entities[0], candidates);
+      var profileB = docProfileForPerson(entities[1], candidates);
+      var commonThemes = profileA.themes.filter(function (x) { return profileB.themes.indexOf(x) !== -1; }).slice(0, 4);
+      var aOnlyThemes = profileA.themes.filter(function (x) { return profileB.themes.indexOf(x) === -1; }).slice(0, 3);
+      var bOnlyThemes = profileB.themes.filter(function (x) { return profileA.themes.indexOf(x) === -1; }).slice(0, 3);
+
+      var topA = byEntity[entities[0]][0] || null;
+      var topB = byEntity[entities[1]][0] || null;
+      var evidence = hits.slice(0, 4);
+      var html = "<div class=\"qa-title\">" + escapeHtml(tx.qaTitle) + "</div><div class=\"qa-body\">";
+
+      var summaryText = "";
+      if (locale === "zh") {
+        summaryText = "按站内可检索内容来看，" + entities[0] + "与" + entities[1] + "既有交叉点，也有关注重心差异。";
+      } else {
+        summaryText = "From the site evidence, " + entities[0] + " and " + entities[1] + " show both overlap and distinct emphases.";
+      }
+      html += "<p><b>" + escapeHtml(tx.qaSummary) + "：</b>" + escapeHtml(summaryText) + "</p>";
+
+      if (intent !== "difference") {
+        var simText = commonThemes.length
+          ? (locale === "zh"
+              ? ("两者在资料标签中都与以下主题相关：" + commonThemes.join("、") + "。")
+              : ("Both are associated with: " + commonThemes.join(", ") + "."))
+          : (locale === "zh"
+              ? "在当前筛选范围中，尚未提取到明确的共同主题标签。"
+              : "No strong shared theme tags were detected in the current scope.");
+        html += "<p><b>" + escapeHtml(tx.qaSimilarity) + "：</b>" + escapeHtml(simText) + "</p>";
+      }
+
+      if (intent !== "similarity") {
+        var diffText = locale === "zh"
+          ? (entities[0] + "相关内容更偏向：" + (aOnlyThemes.length ? aOnlyThemes.join("、") : "资料尚不足") +
+            "；" + entities[1] + "更偏向：" + (bOnlyThemes.length ? bOnlyThemes.join("、") : "资料尚不足") + "。")
+          : (entities[0] + " leans toward: " + (aOnlyThemes.length ? aOnlyThemes.join(", ") : "insufficient data") +
+            "; " + entities[1] + " leans toward: " + (bOnlyThemes.length ? bOnlyThemes.join(", ") : "insufficient data") + ".");
+        html += "<p><b>" + escapeHtml(tx.qaDifference) + "：</b>" + escapeHtml(diffText) + "</p>";
+      }
+
+      html += "<div><b>" + escapeHtml(tx.qaEvidence) + "：</b>";
+      if (topA) html += "<p><b>" + escapeHtml(entities[0]) + "：</b>" + escapeHtml(topA.snippet) + "</p>";
+      if (topB) html += "<p><b>" + escapeHtml(entities[1]) + "：</b>" + escapeHtml(topB.snippet) + "</p>";
+      html += "</div></div>";
+      html += "<div class=\"qa-refs\"><b>" + escapeHtml(tx.qaRefs) + "：</b>" + evidence.map(formatRef).join("；") + "</div>";
       elQaAnswer.innerHTML = html;
     }
 
@@ -649,43 +841,23 @@
 
       var candidates = docsInFilter();
       if (!candidates.length) candidates = docs.slice();
+      var anchors = extractAnchors(q);
+      var intent = detectQuestionIntent(q);
 
-      var tasks = Promise.resolve([]);
-      candidates.forEach(function (doc) {
-        tasks = tasks.then(function (acc) {
-          return loadPdf(doc).then(function (pdf) {
-            var limit = Math.min(pdf.numPages || 0, previewLimit());
-            var scan = Promise.resolve();
-            for (var i = 1; i <= limit; i++) {
-              (function (pageNo) {
-                scan = scan.then(function () {
-                  return extractPageText(doc, pageNo).then(function (payload) {
-                    var txt = payload && payload.text ? payload.text : "";
-                    if (!txt) return;
-                    var score = scoreText(txt, q);
-                    if (score <= 0) return;
-                    acc.push({
-                      doc: doc,
-                      page: pageNo,
-                      score: score,
-                      snippet: snippetAround(txt, q),
-                    });
-                  });
-                });
-              })(i);
-            }
-            return scan.then(function () { return acc; });
-          });
-        });
-      });
-
-      tasks
+      collectQAHits(q, candidates, anchors)
         .then(function (allHits) {
-          allHits.sort(function (a, b) { return b.score - a.score; });
-          renderAnswerHtml(allHits.slice(0, 3));
+          if (!allHits.length) {
+            renderNoEnough();
+            return;
+          }
+          if (intent === "compare" || intent === "difference" || intent === "similarity") {
+            renderCompareAnswer(q, intent, anchors, allHits, candidates);
+            return;
+          }
+          renderGeneralAnswer(q, allHits);
         })
         .catch(function () {
-          if (elQaAnswer) elQaAnswer.textContent = tx.noDataForQA;
+          renderNoEnough();
         });
     }
 

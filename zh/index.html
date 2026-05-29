@@ -3,107 +3,164 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>yuzifudai鱼籽福袋 — 作品集</title>
-    <meta name="description" content="yuzifudai鱼籽福袋的作品集：精选笔记与资料、以及联系方式。" />
+    <title>鱼籽福袋 · 文献札记</title>
+    <meta name="description" content="鱼籽福袋的文献札记与作品集：精选古代文学笔记、资料与联系方式。" />
     <link rel="stylesheet" href="../assets/css/main.css" />
   </head>
   <body>
     <a class="skip-link" href="#content">跳到内容</a>
 
-    <header>
-      <div class="wrap nav">
+    <div class="shell">
+      <aside class="sidebar" aria-label="侧边栏导航">
         <a class="brand" href="./">
           <div class="logo" aria-hidden="true"></div>
           <div>
-            <strong>yuzifudai鱼籽福袋</strong>
-            <span>中国古代文学 · 笔记整理</span>
+            <strong>鱼籽福袋 · 文献札记</strong>
+            <span>中国古代文学 · 笔记与资料</span>
           </div>
         </a>
-        <nav class="navlinks">
-          <a href="#projects">项目</a>
+
+        <nav class="side-nav" aria-label="站点导航">
+          <a class="active" href="#projects">发现</a>
           <a href="#about">关于</a>
-          <a href="#contact" class="pill">联系</a>
-          <a href="../en/" class="pill" aria-label="切换到英文">EN</a>
+          <a href="#contact">联系</a>
+          <button type="button" id="open-access">注册 / 登录</button>
+          <a class="pill" href="../en/" aria-label="切换到英文">EN</a>
         </nav>
-      </div>
-    </header>
 
-    <main id="content" class="wrap">
-      <div class="hero">
-        <section class="card">
-          <div class="kicker"><span class="kdot"></span> 可合作 / 可接项目</div>
-          <h1>做出“快、清晰、好用”的产品体验。</h1>
-          <p>这里展示我整理的古代文学（及相关）资料与结构化笔记。</p>
-          <div class="cta">
-            <a class="btn primary" href="#projects">看项目</a>
-            <a class="btn" href="#contact">联系我</a>
+        <div class="side-meta">
+          <div class="access-badge" aria-live="polite">
+            <span>访问状态</span>
+            <strong id="access-status">未解锁</strong>
           </div>
-        </section>
+          <a class="side-email" href="mailto:yuzifudai7@gmail.com">
+            <span class="avatar" aria-hidden="true">Y</span>
+            <span>yuzifudai7@gmail.com</span>
+          </a>
+        </div>
+      </aside>
 
-        <aside class="card meta">
-          <div class="row">
-            <div class="chip">
-              <b>所在地</b>
-              <span>—</span>
-            </div>
-            <div class="chip">
-              <b>方向</b>
-              <span>先秦至近代 · 考研笔记</span>
-            </div>
+      <div class="page">
+        <header class="topbar">
+          <div class="wrap nav">
+            <a class="brand" href="./">
+              <div class="logo" aria-hidden="true"></div>
+              <div>
+                <strong>鱼籽福袋 · 文献札记</strong>
+                <span>中国古代文学 · 笔记与资料</span>
+              </div>
+            </a>
+            <nav class="navlinks">
+              <a href="#projects">项目</a>
+              <a href="#about">关于</a>
+              <a href="#contact" class="pill">联系</a>
+              <a href="#access" class="pill" id="open-access-mobile">注册</a>
+              <a href="../en/" class="pill" aria-label="切换到英文">EN</a>
+            </nav>
           </div>
-          <div class="row">
-            <div class="chip">
-              <b>邮箱</b>
-              <span><a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a></span>
-            </div>
-            <div class="chip">
-              <b>简历</b>
-              <span>—</span>
-            </div>
+        </header>
+
+        <main id="content" class="wrap">
+          <div class="hero">
+            <section class="card">
+              <div class="kicker"><span class="kdot"></span> 可合作 / 可接项目</div>
+              <h1>以“清晰、克制、可复用”的方式整理知识。</h1>
+              <p>这里展示我整理的中国古代文学（及相关）资料与结构化笔记。</p>
+              <div class="cta">
+                <a class="btn primary" href="#projects">看项目</a>
+                <a class="btn" href="#contact">联系我</a>
+              </div>
+            </section>
+
+            <aside class="card meta">
+              <div class="row">
+                <div class="chip">
+                  <b>方向</b>
+                  <span>先秦至近代 · 考研基础笔记</span>
+                </div>
+                <div class="chip">
+                  <b>访问</b>
+                  <span>公开预览 · 注册后解锁全部</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="chip">
+                  <b>邮箱</b>
+                  <span><a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a></span>
+                </div>
+                <div class="chip">
+                  <b>说明</b>
+                  <span>纯静态站点，加载很快</span>
+                </div>
+              </div>
+            </aside>
           </div>
-        </aside>
+
+          <section id="projects">
+            <div class="section-head">
+              <h2>精选项目</h2>
+              <small>公开预览仅展示部分；注册后可查看全部链接</small>
+            </div>
+            <div class="grid" data-projects></div>
+          </section>
+
+          <section id="about" class="card" style="padding:18px">
+            <div class="section-head">
+              <h2>关于我</h2>
+              <small>建议 5–8 行</small>
+            </div>
+            <p>我专注于把庞杂资料整理成可检索、可复用的结构化笔记，并持续打磨阅读与检索体验。</p>
+          </section>
+
+          <section id="contact" class="card" style="padding:18px">
+            <div class="section-head">
+              <h2>联系</h2>
+              <small>一个明确的行动入口</small>
+            </div>
+            <p>
+              最快联系到我的是邮箱：
+              <a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a>。
+            </p>
+            <div class="cta">
+              <a class="btn primary" href="mailto:yuzifudai7@gmail.com">发邮件</a>
+              <button class="btn" type="button" id="open-access-cta">注册 / 登录</button>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+          <div class="wrap">
+            <div>© <span id="y"></span> 鱼籽福袋 · 文献札记</div>
+          </div>
+        </footer>
       </div>
+    </div>
 
-      <section id="projects">
-        <div class="section-head">
-          <h2>精选项目</h2>
-          <small>在 <code>assets/js/projects-data.js</code> 改项目数据</small>
-        </div>
-        <div class="grid" data-projects></div>
-      </section>
+    <div class="modal" id="access-modal" role="dialog" aria-modal="true" aria-labelledby="access-title">
+      <div class="modal-card">
+        <h3 id="access-title">注册 / 登录以解锁全部内容</h3>
+        <p class="hint">提示：这是静态站点的“轻量解锁”，用于控制展示范围，不是强安全防护。</p>
 
-      <section id="about" class="card" style="padding:18px">
-        <div class="section-head">
-          <h2>关于我</h2>
-          <small>建议 5–8 行</small>
+        <div class="field">
+          <label for="access-email">邮箱（可选）</label>
+          <input id="access-email" type="email" autocomplete="email" placeholder="name@example.com" />
         </div>
-        <p>
-          简短介绍（可选）：你关注什么方向、目前在学/在研究什么、你希望合作或交流的主题。
-        </p>
-      </section>
+        <div class="field">
+          <label for="access-code">访问码</label>
+          <input id="access-code" type="password" autocomplete="current-password" placeholder="输入访问码" />
+        </div>
 
-      <section id="contact" class="card" style="padding:18px">
-        <div class="section-head">
-          <h2>联系</h2>
-          <small>一个明确的行动入口</small>
+        <div class="modal-actions">
+          <button class="btn primary" type="button" id="access-unlock">解锁</button>
+          <button class="btn" type="button" id="access-logout">退出</button>
+          <button class="btn" type="button" id="access-close">关闭</button>
         </div>
-        <p>
-          最快联系到我的是邮箱：
-          <a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a>。
-        </p>
-        <div class="cta">
-          <a class="btn primary" href="mailto:yuzifudai7@gmail.com">发邮件</a>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="wrap">
-        <div>© <span id="y"></span> yuzifudai鱼籽福袋 · 纯静态站点，加载很快。</div>
+        <div class="modal-note" id="access-message" aria-live="polite"></div>
       </div>
-    </footer>
+    </div>
 
     <script src="../assets/js/projects-data.js"></script>
+    <script src="../assets/js/access-config.js"></script>
     <script src="../assets/js/site.js"></script>
     <script>
       document.getElementById("y").textContent = String(new Date().getFullYear());

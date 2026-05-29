@@ -3,107 +3,169 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>yuzifudai鱼籽福袋 — Portfolio</title>
-    <meta name="description" content="Portfolio of yuzifudai鱼籽福袋: selected projects, notes, and contact." />
+    <title>Yuzifudai · Folio</title>
+    <meta name="description" content="Yuzifudai’s folio: curated notes and materials on Chinese literature, plus contact." />
     <link rel="stylesheet" href="../assets/css/main.css" />
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
 
-    <header>
-      <div class="wrap nav">
+    <div class="shell">
+      <aside class="sidebar" aria-label="Sidebar navigation">
         <a class="brand" href="./">
           <div class="logo" aria-hidden="true"></div>
           <div>
-            <strong>yuzifudai鱼籽福袋</strong>
-            <span>Chinese Literature · Notes</span>
+            <strong>Yuzifudai · Folio</strong>
+            <span>Chinese Literature · Notes & Materials</span>
           </div>
         </a>
-        <nav class="navlinks">
-          <a href="#projects">Projects</a>
+
+        <nav class="side-nav" aria-label="Site navigation">
+          <a class="active" href="#projects">Explore</a>
           <a href="#about">About</a>
-          <a href="#contact" class="pill">Contact</a>
-          <a href="../zh/" class="pill" aria-label="Switch to Chinese">中文</a>
+          <a href="#contact">Contact</a>
+          <button type="button" id="open-access">Register / Sign in</button>
+          <a class="pill" href="../zh/" aria-label="Switch to Chinese">中文</a>
         </nav>
-      </div>
-    </header>
 
-    <main id="content" class="wrap">
-      <div class="hero">
-        <section class="card">
-          <div class="kicker"><span class="kdot"></span> Available for collaborations</div>
-          <h1>Build products that feel fast, clear, and delightful.</h1>
-          <p>Portfolio of study notes and structured materials for Chinese literature.</p>
-          <div class="cta">
-            <a class="btn primary" href="#projects">View projects</a>
-            <a class="btn" href="#contact">Get in touch</a>
+        <div class="side-meta">
+          <div class="access-badge" aria-live="polite">
+            <span>Access</span>
+            <strong id="access-status">Locked</strong>
           </div>
-        </section>
-
-        <aside class="card meta">
-          <div class="row">
-            <div class="chip">
-              <b>Location</b>
-              <span>—</span>
-            </div>
-            <div class="chip">
-              <b>Focus</b>
-              <span>Ancient • Modern • Exam Notes</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="chip">
-              <b>Email</b>
-              <span><a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a></span>
-            </div>
-            <div class="chip">
-              <b>Resume</b>
-              <span>—</span>
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      <section id="projects">
-        <div class="section-head">
-          <h2>Selected Projects</h2>
-          <small>Edit data in <code>assets/js/projects-data.js</code></small>
+          <a class="side-email" href="mailto:yuzifudai7@gmail.com">
+            <span class="avatar" aria-hidden="true">Y</span>
+            <span>yuzifudai7@gmail.com</span>
+          </a>
         </div>
-        <div class="grid" data-projects></div>
-      </section>
+      </aside>
 
-      <section id="about" class="card" style="padding:18px">
-        <div class="section-head">
-          <h2>About</h2>
-          <small>Keep it 5–8 lines</small>
-        </div>
-        <p>
-          Short bio (optional): what you focus on, and what you’re currently studying or researching.
+      <div class="page">
+        <header class="topbar">
+          <div class="wrap nav">
+            <a class="brand" href="./">
+              <div class="logo" aria-hidden="true"></div>
+              <div>
+                <strong>Yuzifudai · Folio</strong>
+                <span>Chinese Literature · Notes & Materials</span>
+              </div>
+            </a>
+            <nav class="navlinks">
+              <a href="#projects">Projects</a>
+              <a href="#about">About</a>
+              <a href="#contact" class="pill">Contact</a>
+              <a href="#access" class="pill" id="open-access-mobile">Register</a>
+              <a href="../zh/" class="pill" aria-label="Switch to Chinese">中文</a>
+            </nav>
+          </div>
+        </header>
+
+        <main id="content" class="wrap">
+          <div class="hero">
+            <section class="card">
+              <div class="kicker"><span class="kdot"></span> Open to collaborations</div>
+              <h1>Organize knowledge with clarity, restraint, and reuse.</h1>
+              <p>Curated notes and structured materials for Chinese literature and related topics.</p>
+              <div class="cta">
+                <a class="btn primary" href="#projects">View projects</a>
+                <a class="btn" href="#contact">Get in touch</a>
+              </div>
+            </section>
+
+            <aside class="card meta">
+              <div class="row">
+                <div class="chip">
+                  <b>Focus</b>
+                  <span>Pre-Qin → Modern · Exam Notes</span>
+                </div>
+                <div class="chip">
+                  <b>Access</b>
+                  <span>Public preview · unlock full links</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="chip">
+                  <b>Email</b>
+                  <span><a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a></span>
+                </div>
+                <div class="chip">
+                  <b>Build</b>
+                  <span>Static, fast, and simple</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <section id="projects">
+            <div class="section-head">
+              <h2>Selected Projects</h2>
+              <small>Public preview shows only part; register to unlock all links</small>
+            </div>
+            <div class="grid" data-projects></div>
+          </section>
+
+          <section id="about" class="card" style="padding:18px">
+            <div class="section-head">
+              <h2>About</h2>
+              <small>Keep it 5–8 lines</small>
+            </div>
+            <p>
+              I turn messy source materials into searchable, reusable notes, and keep polishing the reading and
+              retrieval experience.
+            </p>
+          </section>
+
+          <section id="contact" class="card" style="padding:18px">
+            <div class="section-head">
+              <h2>Contact</h2>
+              <small>One clear call-to-action</small>
+            </div>
+            <p>
+              The fastest way to reach me is email:
+              <a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a>.
+            </p>
+            <div class="cta">
+              <a class="btn primary" href="mailto:yuzifudai7@gmail.com">Email me</a>
+              <button class="btn" type="button" id="open-access-cta">Register / Sign in</button>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+          <div class="wrap">
+            <div>© <span id="y"></span> Yuzifudai · Folio</div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <div class="modal" id="access-modal" role="dialog" aria-modal="true" aria-labelledby="access-title">
+      <div class="modal-card">
+        <h3 id="access-title">Register / Sign in to unlock full content</h3>
+        <p class="hint">
+          Note: This is a lightweight static “unlock” for display control, not strong security.
         </p>
-      </section>
 
-      <section id="contact" class="card" style="padding:18px">
-        <div class="section-head">
-          <h2>Contact</h2>
-          <small>One clear call-to-action</small>
+        <div class="field">
+          <label for="access-email">Email (optional)</label>
+          <input id="access-email" type="email" autocomplete="email" placeholder="name@example.com" />
         </div>
-        <p>
-          The fastest way to reach me is email:
-          <a href="mailto:yuzifudai7@gmail.com">yuzifudai7@gmail.com</a>.
-        </p>
-        <div class="cta">
-          <a class="btn primary" href="mailto:yuzifudai7@gmail.com">Email me</a>
+        <div class="field">
+          <label for="access-code">Access code</label>
+          <input id="access-code" type="password" autocomplete="current-password" placeholder="Enter access code" />
         </div>
-      </section>
-    </main>
 
-    <footer>
-      <div class="wrap">
-        <div>© <span id="y"></span> yuzifudai鱼籽福袋 · Built as a fast static site.</div>
+        <div class="modal-actions">
+          <button class="btn primary" type="button" id="access-unlock">Unlock</button>
+          <button class="btn" type="button" id="access-logout">Log out</button>
+          <button class="btn" type="button" id="access-close">Close</button>
+        </div>
+        <div class="modal-note" id="access-message" aria-live="polite"></div>
       </div>
-    </footer>
+    </div>
 
     <script src="../assets/js/projects-data.js"></script>
+    <script src="../assets/js/access-config.js"></script>
     <script src="../assets/js/site.js"></script>
     <script>
       document.getElementById("y").textContent = String(new Date().getFullYear());

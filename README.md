@@ -41,6 +41,16 @@ If you don’t want to run any command, you can also just open `index.html` dire
 Deploy as a static site on any host (Vercel / Netlify / GitHub Pages).
 Just upload the folder and keep the same directory structure.
 
+## Access gate (static “unlock”)
+
+This site uses a lightweight front-end unlock (no real accounts / no database).
+
+- Config: `assets/js/access-config.js`
+- Default access code: `Yuzifudai-2026-Access`
+- Public preview count: `previewCount` (default `2`)
+
+To change the access code, replace the `hash` with `SHA-256("your-new-code")`.
+
 ## PDFs
 
 Your PDFs are stored under `assets/docs/` and linked as projects.

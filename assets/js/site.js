@@ -55,6 +55,18 @@
         bad: "访问码不正确，请重试。",
         loggedOut: "已退出。",
         missing: "请先输入访问码。",
+        projectIntro: "项目简介",
+        projectUsers: "目标用户",
+        projectProblem: "解决的问题",
+        projectTech: "使用技术",
+        projectReview: "项目复盘",
+        projectLink: "项目链接",
+        projectPreview: "项目截图 / 占位图",
+        placeholderPreview: "预览图",
+        fallbackUsers: "面向文史哲学习者与跨文化阅读用户",
+        fallbackProblem: "把分散资料整理成可检索、可复用、可持续更新的结构",
+        fallbackTech: "HTML · CSS · JavaScript · Static Hosting",
+        fallbackReview: "持续迭代中：优化导航、检索、阅读体验与内容质量",
       };
     }
     return {
@@ -68,6 +80,18 @@
       bad: "Invalid access code. Please try again.",
       loggedOut: "Logged out.",
       missing: "Please enter an access code.",
+      projectIntro: "Project Intro",
+      projectUsers: "Target Users",
+      projectProblem: "Problem Solved",
+      projectTech: "Tech Stack",
+      projectReview: "Project Review",
+      projectLink: "Project Link",
+      projectPreview: "Screenshot / Placeholder",
+      placeholderPreview: "Preview",
+      fallbackUsers: "Humanities learners and cross-cultural readers",
+      fallbackProblem: "Turn scattered materials into searchable, reusable, updatable structures",
+      fallbackTech: "HTML · CSS · JavaScript · Static Hosting",
+      fallbackReview: "Iterating: navigation, retrieval, reading experience, and content quality",
     };
   }
 
@@ -192,17 +216,60 @@
 
     items.forEach(function (p, idx) {
       var card = document.createElement("article");
-      card.className = "project";
+      card.className = "project col-6";
       card.setAttribute("aria-label", textByLocale(p.title, locale));
+
+      var cover = document.createElement("div");
+      cover.className = "project-cover";
+      cover.setAttribute("aria-hidden", "true");
+      var coverTitle = document.createElement("b");
+      coverTitle.textContent = textByLocale(p.title, locale);
+      var coverSub = document.createElement("span");
+      coverSub.textContent = textByLocale(p.coverText, locale) || t.placeholderPreview;
+      cover.appendChild(coverTitle);
+      cover.appendChild(coverSub);
+      card.appendChild(cover);
 
       var h3 = document.createElement("h3");
       h3.textContent = textByLocale(p.title, locale);
       card.appendChild(h3);
 
-      var desc = document.createElement("p");
-      desc.className = "desc";
-      desc.textContent = textByLocale(p.description, locale);
-      card.appendChild(desc);
+      var facts = document.createElement("div");
+      facts.className = "project-facts";
+
+      var intro = document.createElement("div");
+      intro.className = "fact";
+      intro.innerHTML =
+        "<b>" + t.projectIntro + "</b><span>" + (textByLocale(p.description, locale) || t.fallbackProblem) + "</span>";
+      facts.appendChild(intro);
+
+      var users = document.createElement("div");
+      users.className = "fact";
+      users.innerHTML =
+        "<b>" + t.projectUsers + "</b><span>" + (textByLocale(p.targetUsers, locale) || t.fallbackUsers) + "</span>";
+      facts.appendChild(users);
+
+      var problem = document.createElement("div");
+      problem.className = "fact";
+      problem.innerHTML =
+        "<b>" + t.projectProblem + "</b><span>" + (textByLocale(p.problem, locale) || t.fallbackProblem) + "</span>";
+      facts.appendChild(problem);
+
+      var techValue = "";
+      if (Array.isArray(p.tech)) techValue = p.tech.join(" · ");
+      else techValue = textByLocale(p.tech, locale);
+      var tech = document.createElement("div");
+      tech.className = "fact";
+      tech.innerHTML = "<b>" + t.projectTech + "</b><span>" + (techValue || t.fallbackTech) + "</span>";
+      facts.appendChild(tech);
+
+      var review = document.createElement("div");
+      review.className = "fact";
+      review.innerHTML =
+        "<b>" + t.projectReview + "</b><span>" + (textByLocale(p.review, locale) || t.fallbackReview) + "</span>";
+      facts.appendChild(review);
+
+      card.appendChild(facts);
 
       if (Array.isArray(p.tags) && p.tags.length) {
         var tags = document.createElement("div");
@@ -221,6 +288,10 @@
       if (!shouldLock && Array.isArray(p.links) && p.links.length) {
         var links = document.createElement("div");
         links.className = "proj-links";
+        var linkTitle = document.createElement("span");
+        linkTitle.className = "proj-links-title";
+        linkTitle.textContent = t.projectLink + "：";
+        links.appendChild(linkTitle);
         p.links.forEach(function (l) {
           var a = document.createElement("a");
           a.href = l.href;

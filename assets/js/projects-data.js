@@ -2,12 +2,50 @@
 // Keep it dependency-free so it works on any static host.
 window.PORTFOLIO_PROJECTS = [
   {
+    id: "integrated-humanities-platform",
+    title: { en: "Integrated Humanities Learning Platform", zh: "文史哲一体化学习平台" },
+    description: {
+      en: "A bilingual learning portal connecting literature, philosophy, and history with searchable routes.",
+      zh: "一个连接文学、哲学、历史的双语学习门户，强调可检索、可对照、可持续学习。",
+    },
+    targetUsers: {
+      en: "Students, cross-cultural learners, and non-specialist readers",
+      zh: "学生、跨文化学习者、非专业读者",
+    },
+    problem: {
+      en: "Most humanities resources are fragmented and repetitive; learners struggle to build a clear map.",
+      zh: "文科资料长期碎片化、重复化，学习者很难建立清晰地图。",
+    },
+    tech: ["HTML", "CSS", "JavaScript", "Vercel"],
+    review: {
+      en: "Current focus is improving indexing quality, bilingual reading flow, and AI-assisted Q&A.",
+      zh: "当前重点是完善索引质量、双语阅读流与站内 AI 问答体验。",
+    },
+    coverText: { en: "Homepage · Library · Philosophy", zh: "首页 · 文学书架 · 哲学书架" },
+    tags: ["Bilingual", "Learning Platform", "Humanities"],
+    links: [{ label: { en: "Open Library", zh: "打开书架" }, href: "./library.html" }],
+  },
+  {
     id: "pku-ancient-lit-notes",
     title: { en: "Ancient Chinese Literature Compendium (2023-10-01)", zh: "古代文学资料汇编（2023-10-01）" },
     description: {
       en: "Core notes for Ancient Chinese Literature, organized into a clear and reusable structure.",
       zh: "古代文学资料汇编：整理为结构化提纲，便于系统阅读与检索。",
     },
+    targetUsers: {
+      en: "Chinese literature learners preparing for structured review",
+      zh: "需要系统复习古代文学的学习者",
+    },
+    problem: {
+      en: "Dense notes are hard to navigate without a layered structure.",
+      zh: "高密度资料若无层级结构，阅读与复习效率会显著下降。",
+    },
+    tech: ["PDF indexing", "Keyword navigation", "Static site"],
+    review: {
+      en: "Large-scale materials are now organized by period/theme/people and keep being refined.",
+      zh: "已按年代/主题/人物组织，后续继续补足检索与导读。",
+    },
+    coverText: { en: "Compendium · Structured Index", zh: "总纲文献 · 结构索引" },
     tags: ["Notes", "Compendium", "Chinese Literature"],
     links: [
       { label: { en: "PDF", zh: "PDF" }, href: "../assets/docs/pku-ancient-lit-notes-2023-10-01.pdf" },

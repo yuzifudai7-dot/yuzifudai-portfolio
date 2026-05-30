@@ -363,6 +363,49 @@ section{margin-top:20px}
   font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
 }
 .project .desc{color:var(--muted);font-size:13px;line-height:1.55}
+.project-cover{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  background:
+    radial-gradient(260px 80px at 18% 15%, rgba(108, 75, 42, 0.10), transparent 62%),
+    radial-gradient(240px 120px at 80% 85%, rgba(176, 140, 98, 0.14), transparent 58%),
+    rgba(255, 255, 255, 0.62);
+}
+.project-cover b{
+  display:block;
+  font-size:12px;
+  font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
+}
+.project-cover span{
+  display:block;
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+.project-facts{
+  display:grid;
+  gap:8px;
+}
+.fact{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:9px 10px;
+  background: rgba(255, 255, 255, 0.48);
+}
+.fact b{
+  display:block;
+  font-size:11px;
+  letter-spacing:.2px;
+  color:rgba(35,31,26,.86);
+}
+.fact span{
+  display:block;
+  margin-top:4px;
+  font-size:12px;
+  line-height:1.6;
+  color:var(--muted);
+}
 .tags{display:flex;gap:8px;flex-wrap:wrap}
 .tag{
   font-size:12px;color:var(--muted);
@@ -371,8 +414,17 @@ section{margin-top:20px}
   background: rgba(255, 255, 255, 0.42);
 }
 .proj-links{display:flex;gap:10px;flex-wrap:wrap}
+.proj-links-title{
+  font-size:12px;
+  color:var(--muted);
+}
 .proj-links a{color:var(--text);text-decoration:none;font-size:13px}
 .proj-links a:hover{text-decoration:underline}
+
+.about-copy{
+  display:grid;
+  gap:10px;
+}
 
 /* Locked overlay */
 .project.locked {

@@ -30,6 +30,11 @@ body {
     linear-gradient(180deg, var(--bg2), var(--bg));
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans",
     "Helvetica Neue", Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: rgba(108, 75, 42, 0.24);
+  color: var(--text);
 }
 
 a {
@@ -223,6 +228,7 @@ main {
   background: var(--card);
   border-radius: var(--radius);
   box-shadow:var(--shadow);
+  backdrop-filter: blur(8px);
 }
 .hero .card{padding:22px}
 .hero-main{
@@ -276,7 +282,7 @@ main {
 }
 h1 {
   margin: 14px 0 8px;
-  font-size: 34px;
+  font-size: clamp(30px, 4vw, 42px);
   line-height: 1.15;
   letter-spacing: -0.02em;
   font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
@@ -345,6 +351,34 @@ section{margin-top:20px}
   grid-template-columns:repeat(12, 1fr);
   gap:12px;
 }
+.pathway-panel{
+  padding:18px;
+}
+.pathway-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+}
+@media (max-width: 860px){
+  .pathway-grid{grid-template-columns:1fr}
+}
+.pathway-item{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  background:
+    radial-gradient(120px 60px at 86% 14%, rgba(176, 140, 98, 0.14), transparent 72%),
+    rgba(255, 255, 255, 0.50);
+}
+.pathway-item b{
+  display:block;
+  font-size:13px;
+  margin-bottom:4px;
+}
+.pathway-item p{
+  font-size:13px;
+  line-height:1.7;
+}
 .col-6{grid-column:span 6}
 .col-4{grid-column:span 4}
 .col-12{grid-column:span 12}
@@ -356,6 +390,12 @@ section{margin-top:20px}
   background: rgba(255, 255, 255, 0.42);
   display:flex;flex-direction:column;gap:10px;
   position: relative;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.project:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(35, 31, 26, 0.10);
+  border-color: rgba(108, 75, 42, 0.24);
 }
 .project h3{
   margin:0;
@@ -424,6 +464,20 @@ section{margin-top:20px}
 .about-copy{
   display:grid;
   gap:10px;
+}
+.about-journey{
+  display:grid;
+  gap:8px;
+  margin-bottom:12px;
+}
+.about-journey span{
+  display:block;
+  padding:8px 10px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.46);
+  color: rgba(35, 31, 26, 0.78);
+  font-size:12px;
 }
 
 /* Locked overlay */
@@ -869,4 +923,11 @@ footer {
 }
 footer a {
   color: var(--text);
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
 }

@@ -32,6 +32,17 @@ body {
     "Helvetica Neue", Arial, sans-serif;
   text-rendering: optimizeLegibility;
 }
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background-image:
+    radial-gradient(rgba(35,31,26,.03) 0.5px, transparent 0.5px);
+  background-size: 3px 3px;
+  opacity:.35;
+}
 ::selection {
   background: rgba(108, 75, 42, 0.24);
   color: var(--text);
@@ -81,6 +92,8 @@ a {
 
 .page {
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .nav{
@@ -354,6 +367,37 @@ section{margin-top:20px}
 .pathway-panel{
   padding:18px;
 }
+.visual-atlas{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:10px;
+  margin: 2px 0 12px;
+}
+@media (max-width: 900px){
+  .visual-atlas{grid-template-columns:1fr}
+}
+.visual-card{
+  border:1px solid var(--border);
+  border-radius:16px;
+  background: rgba(255,255,255,.56);
+  padding:10px;
+}
+.visual-card img{
+  width:100%;
+  display:block;
+  border:1px solid rgba(35,31,26,.1);
+  border-radius:12px;
+  background: rgba(255,255,255,.72);
+}
+.visual-card b{
+  display:block;
+  font-size:13px;
+  margin:8px 0 4px;
+}
+.visual-card p{
+  font-size:12px;
+  line-height:1.65;
+}
 .pathway-grid{
   display:grid;
   grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -396,6 +440,9 @@ section{margin-top:20px}
   transform: translateY(-2px);
   box-shadow: 0 16px 40px rgba(35, 31, 26, 0.10);
   border-color: rgba(108, 75, 42, 0.24);
+}
+.project:focus-within{
+  box-shadow: 0 0 0 3px rgba(108, 75, 42, 0.14), 0 16px 40px rgba(35, 31, 26, 0.10);
 }
 .project h3{
   margin:0;

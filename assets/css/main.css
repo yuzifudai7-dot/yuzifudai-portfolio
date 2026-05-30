@@ -225,6 +225,44 @@ main {
   box-shadow:var(--shadow);
 }
 .hero .card{padding:22px}
+.hero-main{
+  display:grid;
+  gap:12px;
+}
+.hero-lead{
+  font-size:15px;
+  color: rgba(35, 31, 26, 0.78);
+}
+.hero-subline{
+  font-size:13px;
+  color: var(--muted);
+}
+.hero-focus{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:10px;
+  margin-top:4px;
+}
+@media (max-width: 760px){
+  .hero-focus{grid-template-columns:1fr}
+}
+.focus-item{
+  padding:10px 11px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255, 255, 255, 0.45);
+}
+.focus-item b{
+  display:block;
+  font-size:12px;
+}
+.focus-item span{
+  display:block;
+  margin-top:5px;
+  font-size:12px;
+  line-height:1.6;
+  color: var(--muted);
+}
 .kicker{
   display:inline-flex;align-items:center;gap:10px;
   padding:8px 12px;border-radius:999px;
@@ -278,6 +316,9 @@ a:focus-visible {
 .meta{
   padding:18px;
   display:grid;gap:10px;
+}
+.hero-side .chip span{
+  line-height:1.7;
 }
 .meta .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width: 900px){.meta .row{grid-template-columns:1fr}}

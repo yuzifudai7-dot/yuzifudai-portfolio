@@ -64,6 +64,24 @@ Notes:
 - Pages that are mostly handwriting/photos may not have extractable text; the UI will link you to the original PDF page.
 - Search is fast but currently only searches pages you’ve already opened (the page cache grows as you browse).
 
+## Philosophy shelf (mirrored open texts)
+
+This repo can also mirror open / public-domain philosophy texts and present them with:
+
+- TOC-style navigation via `Time` + `School`
+- `Topics` + `People` filters
+- Always-on attribution (source link + license)
+
+Entry pages:
+
+- Chinese: `./zh/philo.html`
+- English: `./en/philo.html`
+
+Content + metadata:
+
+- Text files: `assets/philo/texts/`
+- Metadata: `assets/js/philo-data.js`
+
 ## PDFs
 
 Your PDFs are stored under `assets/docs/` and linked as projects.

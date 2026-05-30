@@ -12,6 +12,7 @@
   --radius2: 14px;
   --accent: #6c4b2a;
   --accent2: #b08c62;
+  --accent-hot: #d92727;
   --focus: rgba(108, 75, 42, 0.26);
 }
 
@@ -422,6 +423,92 @@ section{margin-top:20px}
 .pathway-item p{
   font-size:13px;
   line-height:1.7;
+}
+.creative-scene{
+  padding:18px;
+}
+.creative-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr;
+  gap:10px;
+}
+@media (max-width: 980px){
+  .creative-grid{grid-template-columns:1fr}
+}
+.creative-card{
+  border:1px solid var(--border);
+  border-radius:16px;
+  background: rgba(255,255,255,.56);
+  padding:12px;
+  position:relative;
+  overflow:hidden;
+}
+.creative-card-manifest::after{
+  content:"";
+  position:absolute;
+  right:-32px;
+  top:-34px;
+  width:122px;
+  height:122px;
+  border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.82), rgba(217,39,39,.72));
+  opacity:.88;
+}
+.creative-kicker{
+  font-size:11px;
+  letter-spacing:.18em;
+  color: rgba(35,31,26,.66);
+  margin:0 0 8px;
+}
+.creative-card h3{
+  margin:0 0 10px;
+  font-size:22px;
+  line-height:1.34;
+  max-width: 34ch;
+  font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
+}
+.creative-card-manifest p{
+  max-width: 44ch;
+}
+.creative-card-lines{
+  display:grid;
+  align-content:space-between;
+}
+.creative-card-lines img{
+  width:100%;
+  border-radius:12px;
+  border:1px solid rgba(35,31,26,.1);
+  background: rgba(255,255,255,.72);
+  filter: contrast(1.04) saturate(.9);
+}
+.creative-tags{
+  margin-top:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.creative-tags span{
+  font-size:11px;
+  border:1px solid rgba(217,39,39,.28);
+  color: rgba(35,31,26,.78);
+  padding:5px 8px;
+  border-radius:999px;
+  background: rgba(255,255,255,.78);
+}
+.creative-card-quote{
+  background:
+    radial-gradient(240px 180px at 88% 10%, rgba(217,39,39,.14), transparent 68%),
+    rgba(255,255,255,.58);
+}
+.creative-card-quote blockquote{
+  margin:0;
+  font-size:22px;
+  line-height:1.45;
+  font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
+}
+.creative-card-quote p{
+  margin-top:14px;
+  font-size:12px;
 }
 .col-6{grid-column:span 6}
 .col-4{grid-column:span 4}

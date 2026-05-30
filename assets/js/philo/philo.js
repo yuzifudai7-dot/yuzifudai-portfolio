@@ -60,6 +60,8 @@
       person: "",
       docId: docs[0] ? docs[0].id : "",
       q: "",
+      viewMode: locale === "zh" ? "zh" : "orig",
+      translateWindow: 36,
     };
 
     var eraValues = uniq(docs.map(function (d) { return textByLocale(d.era, locale); }));
@@ -78,6 +80,10 @@
     var elViewer = document.querySelector("[data-viewer]");
     var elSearch = document.querySelector("[data-search]");
     var elSearchBtn = document.querySelector("[data-search-btn]");
+    var elModeBtns = Array.prototype.slice.call(document.querySelectorAll("[data-mode]"));
+    var elTranslateNote = document.querySelector("[data-translate-note]");
+    var elTranslateMore = document.querySelector("[data-translate-more]");
+    var elBranchBtns = Array.prototype.slice.call(document.querySelectorAll("[data-branch-btn]"));
 
     function matches(doc) {
       var era = textByLocale(doc.era, locale);
@@ -152,6 +158,26 @@
     }
 
     var cache = {}; // docId -> text
+    var translatedCache = {}; // docId -> { idx: translatedBlock }
+    var translatingDoc = null;
+    var translating = false;
+
+    var glossaryMap = {
+      "virtue": "德性",
+      "justice": "正义",
+      "soul": "灵魂",
+      "reason": "理性",
+      "happiness": "幸福",
+      "good": "善",
+      "form": "理念",
+      "substance": "实体",
+      "metaphysics": "形而上学",
+      "epistemology": "认识论",
+      "Plato": "柏拉图",
+      "Aristotle": "亚里士多德",
+      "Socrates": "苏格拉底",
+      "Descartes": "笛卡尔"
+    };
 
     function loadText(doc) {
       if (!doc) return Promise.resolve("");
@@ -160,6 +186,105 @@
         cache[doc.id] = txt;
         return txt;
       });
+    }
+
+    function splitForTranslation(text, maxLen) {
+      if (text.length <= maxLen) return [text];
+      var parts = [];
+      var current = "";
+      var segs = text.split(/([.?!;:。？！；：])/);
+      for (var i = 0; i < segs.length; i++) {
+        var token = segs[i];
+        if (!token) continue;
+        if ((current + token).length > maxLen && current) {
+          parts.push(current);
+          current = token;
+        } else {
+          current += token;
+        }
+      }
+      if (current) parts.push(current);
+      return parts;
+    }
+
+    function polishZh(text) {
+      var output = String(text || "");
+      Object.keys(glossaryMap).forEach(function (k) {
+        var re = new RegExp("\\b" + escapeRegExp(k) + "\\b", "gi");
+        output = output.replace(re, glossaryMap[k]);
+      });
+      output = output.replace(/哲学家王/g, "哲人王");
+      output = output.replace(/德行/g, "德性");
+      output = output.replace(/\s+([，。；：？！])/g, "$1");
+      return output;
+    }
+
+    function translateChunkMyMemory(text) {
+      var endpoint = "https://api.mymemory.translated.net/get?q=" + encodeURIComponent(text) + "&langpair=en|zh-CN";
+      return fetch(endpoint).then(function (r) { return r.json(); }).then(function (data) {
+        var value = data && data.responseData ? data.responseData.translatedText : "";
+        return value || text;
+      });
+    }
+
+    function translateChunkLibre(text) {
+      return fetch("https://www.libretranslate.com/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          q: text,
+          source: "en",
+          target: "zh",
+          format: "text"
+        })
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        return (data && data.translatedText) ? data.translatedText : text;
+      });
+    }
+
+    function translateChunk(text) {
+      return translateChunkLibre(text).catch(function () {
+        return translateChunkMyMemory(text);
+      }).catch(function () {
+        return text;
+      });
+    }
+
+    function translateBlock(text) {
+      var segments = splitForTranslation(text, 420);
+      var chain = Promise.resolve([]);
+      segments.forEach(function (seg) {
+        chain = chain.then(function (acc) {
+          return translateChunk(seg).then(function (out) {
+            acc.push(out);
+            return acc;
+          });
+        });
+      });
+      return chain.then(function (arr) {
+        return polishZh(arr.join(""));
+      });
+    }
+
+    function setModeUi() {
+      elModeBtns.forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-mode") === st.viewMode);
+      });
+      if (elTranslateMore) elTranslateMore.style.display = st.viewMode === "zh" ? "inline-flex" : "none";
+      if (elTranslateNote) {
+        elTranslateNote.textContent = st.viewMode === "zh"
+          ? (locale === "zh" ? "译文为“开放翻译 + 术语润色”模式，可能有少量偏差。" : "Translation uses open engine + glossary polishing.")
+          : "";
+      }
+    }
+
+    function renderBranchActive(branch) {
+      elBranchBtns.forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-branch-btn") === branch);
+      });
+      var targetId = branch === "topic" ? "branch-topic" : (branch === "people" ? "branch-people" : "branch-toc");
+      var target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function extractTocLines(text) {
@@ -179,6 +304,7 @@
     function loadAndRender() {
       var doc = getDoc();
       if (!doc) return;
+      setModeUi();
       if (elDocTitle) elDocTitle.textContent = textByLocale(doc.title, locale);
       if (elDocMeta) {
         var meta = [textByLocale(doc.author, locale)];
@@ -212,15 +338,49 @@
         head += "</div>";
 
         var body = "<article class=\"reader-article\">";
-        var blocks = txt.split(/\n{2,}/).slice(0, 1200); // prevent extreme render cost
-        blocks.forEach(function (blk) {
+        var blocks = txt.split(/\n{2,}/).slice(0, 320);
+        var docTranslations = translatedCache[doc.id] || {};
+        blocks.forEach(function (blk, idx) {
           var cleaned = blk.replace(/\s+$/g, "");
           if (!cleaned.trim()) return;
-          body += "<p class=\"viewer-text\">" + highlightHtml(cleaned, terms) + "</p>";
+          var content = cleaned;
+          if (st.viewMode === "zh" && idx < st.translateWindow) {
+            content = docTranslations[idx] || cleaned;
+          }
+          body += "<p class=\"viewer-text\">" + highlightHtml(content, terms) + "</p>";
         });
         body += "</article>";
 
         if (elViewer) elViewer.innerHTML = head + body;
+
+        if (st.viewMode === "zh") {
+          var needTranslate = [];
+          for (var i = 0; i < blocks.length && i < st.translateWindow; i++) {
+            var b = blocks[i].replace(/\s+$/g, "");
+            if (!b.trim()) continue;
+            if (!docTranslations[i]) needTranslate.push({ idx: i, text: b });
+          }
+          if (needTranslate.length) {
+            translatingDoc = doc.id;
+            if (!translatedCache[doc.id]) translatedCache[doc.id] = {};
+            if (!translating) {
+              translating = true;
+              var queue = Promise.resolve();
+              needTranslate.forEach(function (item) {
+                queue = queue.then(function () {
+                  return translateBlock(item.text).then(function (zhText) {
+                    if (translatingDoc !== doc.id) return;
+                    translatedCache[doc.id][item.idx] = zhText;
+                  });
+                });
+              });
+              queue.finally(function () {
+                translating = false;
+                if (translatingDoc === doc.id) loadAndRender();
+              });
+            }
+          }
+        }
       });
     }
 
@@ -235,6 +395,26 @@
       });
     }
 
+    if (elTranslateMore) {
+      elTranslateMore.addEventListener("click", function () {
+        st.translateWindow += 30;
+        loadAndRender();
+      });
+    }
+
+    elModeBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        st.viewMode = btn.getAttribute("data-mode") || "orig";
+        loadAndRender();
+      });
+    });
+
+    elBranchBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        renderBranchActive(btn.getAttribute("data-branch-btn"));
+      });
+    });
+
     renderFilters();
     renderDocList();
     loadAndRender();
@@ -246,4 +426,3 @@
     main();
   }
 })();
-

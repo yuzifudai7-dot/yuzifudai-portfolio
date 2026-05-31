@@ -60,7 +60,7 @@
       person: "",
       docId: docs[0] ? docs[0].id : "",
       q: "",
-      viewMode: locale === "zh" ? "zh" : "orig",
+      viewMode: "orig",
       translateWindow: 36,
     };
 

@@ -66,41 +66,22 @@
 
         <main id="content" class="wrap">
           <section class="card poster-home">
-            <div class="mood-grid">
-              <article class="mood-card mood-browser">
-                <header class="mood-window-bar">
-                  <span class="mood-dots"></span>
-                  <span>yuzifudai.folio</span>
-                  <span>⌂ + ⧉</span>
-                </header>
-                <div class="mood-browser-inner">
-                  <nav class="mood-mini-nav">
-                    <span>project</span>
-                    <span>about</span>
-                    <span>library</span>
-                    <span>philo</span>
-                  </nav>
-                  <p class="mood-manifesto">
-                    Is any of this real? 谁在定义我们对知识的边界？当文学、历史与哲学被重新拼接，阅读就不再只是输入，而是一次次主动发问。
-                  </p>
-                </div>
-              </article>
-
-              <article class="mood-card mood-night">
-                <img src="../assets/img/style/ref-9285.jpg" alt="蓝色氛围拼贴参考" loading="lazy" />
-                <div class="mood-night-overlay">
-                  <p>THE DIMENSION OF INTERTWINING</p>
-                  <h1>文史哲一体</h1>
-                </div>
-              </article>
+            <div class="ab-switch" role="tablist" aria-label="主页主视觉方案">
+              <button class="ab-btn active" type="button" data-hero-variant="a">方案 A · 夜色叙事</button>
+              <button class="ab-btn" type="button" data-hero-variant="b">方案 B · 波普城市</button>
             </div>
 
-            <article class="mood-card mood-collage">
-              <img src="../assets/img/style/ref-9288.jpg" alt="留白画廊拼贴参考" loading="lazy" />
-              <div class="mood-collage-strip">
-                <img src="../assets/img/style/ref-9291.jpg" alt="" loading="lazy" />
-                <img src="../assets/img/style/ref-9293.png" alt="" loading="lazy" />
-                <img src="../assets/img/style/ref-9278.jpg" alt="" loading="lazy" />
+            <article class="mood-card mood-hero-stage">
+              <img id="hero-visual" src="../assets/img/style/hero-original-a.png" alt="文史哲一体主视觉A" loading="eager" />
+              <div class="hero-overlay hero-overlay-a" id="hero-overlay-a">
+                <p>THE DIMENSION OF INTERTWINING</p>
+                <h1>文史哲一体</h1>
+                <span>连接历史、文学与哲学，进入你的思考现场。</span>
+              </div>
+              <div class="hero-overlay hero-overlay-b" id="hero-overlay-b" hidden>
+                <p>POP HUMANITIES ARCHIVE</p>
+                <h1>文史哲一体</h1>
+                <span>把知识变成可感知的视觉叙事系统。</span>
               </div>
             </article>
 
@@ -193,6 +174,30 @@
     <script src="../assets/js/access-config.js"></script>
     <script src="../assets/js/site.js"></script>
     <script>
+      (function () {
+        const visual = document.getElementById("hero-visual");
+        const overlayA = document.getElementById("hero-overlay-a");
+        const overlayB = document.getElementById("hero-overlay-b");
+        const buttons = Array.from(document.querySelectorAll("[data-hero-variant]"));
+        const variants = {
+          a: { src: "../assets/img/style/hero-original-a.png", alt: "文史哲一体主视觉A" },
+          b: { src: "../assets/img/style/hero-original-b.png", alt: "文史哲一体主视觉B" }
+        };
+
+        function setVariant(key) {
+          const selected = variants[key] || variants.a;
+          visual.src = selected.src;
+          visual.alt = selected.alt;
+          overlayA.hidden = key !== "a";
+          overlayB.hidden = key !== "b";
+          buttons.forEach((button) => button.classList.toggle("active", button.dataset.heroVariant === key));
+        }
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => setVariant(button.dataset.heroVariant));
+        });
+      })();
+
       document.getElementById("y").textContent = String(new Date().getFullYear());
     </script>
   </body>

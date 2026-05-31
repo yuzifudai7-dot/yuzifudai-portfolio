@@ -235,91 +235,134 @@ main {
 }
 
 .poster-home{
-  padding: 36px 22px 18px;
-  border-radius: 0;
-  background: #cbccd1;
-  box-shadow: 0 30px 65px rgba(13, 14, 16, 0.14);
+  padding: 20px;
+  border-radius: 12px;
+  background: #cfced3;
+  box-shadow: 0 24px 64px rgba(12, 12, 16, 0.14);
 }
-.poster-heading{
-  text-align: center;
-  margin-bottom: 26px;
+.mood-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:12px;
 }
-.poster-kicker{
-  margin: 0;
-  color: #2f4f9c;
-  font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
-  font-size: clamp(34px, 5.2vw, 58px);
-  line-height: 1.2;
+.mood-card{
+  border:1px solid rgba(15,15,17,.14);
+  border-radius:14px;
+  background: rgba(248,248,250,.78);
+  overflow:hidden;
+  position:relative;
 }
-.poster-title{
-  margin: 8px 0 16px;
-  color: #dd3532;
-  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-  font-size: clamp(92px, 13vw, 192px);
-  line-height: .88;
-  font-weight: 500;
-  letter-spacing: .01em;
-}
-.poster-subtitle{
-  margin: 0 auto;
-  max-width: 18em;
-  font-size: clamp(18px, 2.4vw, 44px);
-  color: rgba(35, 36, 40, 0.48);
-  line-height: 1.45;
-  font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
-}
-.poster-collage{
-  border: 1px solid rgba(12, 12, 14, 0.08);
-  background: linear-gradient(130deg, #d8d8d8, #9e9e9e);
-  height: min(70vw, 720px);
-  min-height: 360px;
-  position: relative;
-  overflow: hidden;
-}
-.poster-collage::before{
-  content:"";
-  position: absolute;
-  inset: 0;
+.mood-browser{
+  min-height:420px;
   background:
-    linear-gradient(90deg, rgba(255,255,255,.22), transparent 22%, transparent 78%, rgba(0,0,0,.12)),
-    radial-gradient(550px 300px at 50% 65%, rgba(205,205,205,.38), rgba(124,124,124,.16) 75%, rgba(106,106,106,.08)),
-    linear-gradient(180deg, rgba(255,255,255,.08), rgba(34,34,38,.1));
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.1)),
+    url("../img/style/ref-9278.jpg") center/cover no-repeat;
 }
-.poster-canvas{
-  position: absolute;
-  inset: 8% 8%;
+.mood-window-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  letter-spacing:.08em;
+  color: rgba(255,255,255,.82);
+  padding:10px 12px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+  background: rgba(0,0,0,.14);
 }
-.tile{
-  position: absolute;
-  border: 1px solid rgba(20,20,20,.22);
-  background: rgba(225,225,225,.45);
-  box-shadow: 0 12px 26px rgba(16,16,16,.18);
-  overflow: hidden;
+.mood-dots{
+  width:44px;
+  height:10px;
+  background: radial-gradient(circle, rgba(255,255,255,.72) 3px, transparent 3px) 0 0/15px 10px;
 }
-.tile img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.08);
-  opacity: .9;
+.mood-browser-inner{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:14px;
+  padding:14px;
 }
-.t1{left:8%;top:16%;width:24%;height:54%;}
-.t2{left:24%;top:46%;width:18%;height:22%; background: rgba(217,39,39,.76);}
-.t3{left:42%;top:18%;width:24%;height:58%; background: rgba(232,220,198,.86);}
-.t4{left:61%;top:45%;width:27%;height:28%; background: rgba(17,76,152,.8);}
-.t5{left:72%;top:22%;width:16%;height:22%; background: rgba(217,39,39,.76);}
-.t6{left:34%;top:58%;width:20%;height:20%;}
-.t7{left:16%;top:68%;width:14%;height:14%; background: rgba(232,220,198,.82);}
-.t8{left:54%;top:68%;width:11%;height:14%; background: rgba(22,52,95,.86);}
+.mood-mini-nav{
+  display:grid;
+  align-content:start;
+  gap:6px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:11px;
+  color: rgba(255,255,255,.85);
+}
+.mood-manifesto{
+  margin:0;
+  color: rgba(0,0,0,.9);
+  font-size: clamp(18px, 2.05vw, 33px);
+  line-height:1.3;
+  max-width: 24ch;
+  font-weight: 520;
+  background: rgba(255,255,255,.55);
+  padding:10px 12px;
+  border-radius:8px;
+}
+.mood-night{
+  min-height:420px;
+}
+.mood-night img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter: saturate(.95) contrast(1.04);
+}
+.mood-night-overlay{
+  position:absolute;
+  inset:auto 12px 12px 12px;
+  color:#ff3737;
+  text-shadow: 0 4px 14px rgba(0,0,0,.35);
+}
+.mood-night-overlay p{
+  margin:0;
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#ff4e4e;
+}
+.mood-night-overlay h1{
+  margin:6px 0 0;
+  color:#ff3a3a;
+  font-size: clamp(44px, 7vw, 82px);
+  line-height:.95;
+  letter-spacing:.01em;
+}
+.mood-collage{
+  margin-top:12px;
+  background: #f8f8f8;
+  padding:12px;
+}
+.mood-collage > img{
+  width:100%;
+  border-radius:10px;
+  border:1px solid rgba(20,20,20,.14);
+  display:block;
+}
+.mood-collage-strip{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+.mood-collage-strip img{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  border-radius:8px;
+  border:1px solid rgba(20,20,20,.12);
+}
 .poster-footer{
-  margin-top: 14px;
+  margin-top: 12px;
   display:flex;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  color: rgba(35,36,40,.58);
+  color: rgba(24,24,28,.62);
   font-family: ui-serif, Georgia, "Times New Roman", Times, "Noto Serif SC", "Songti SC", serif;
-  font-size: clamp(18px, 2vw, 42px);
+  font-size: clamp(18px, 2.2vw, 32px);
 }
 .poster-footer a{
   color: inherit;
@@ -328,9 +371,29 @@ main {
 .poster-footer a:hover{
   text-decoration: underline;
 }
+@media (max-width: 1080px){
+  .mood-grid{
+    grid-template-columns:1fr;
+  }
+}
 @media (max-width: 980px){
-  .poster-home{padding: 24px 14px 14px;}
-  .poster-collage{height: min(82vw, 540px);}
+  .poster-home{padding: 14px;}
+  .mood-browser,
+  .mood-night{
+    min-height:340px;
+  }
+  .mood-browser-inner{
+    grid-template-columns:1fr;
+  }
+  .mood-manifesto{
+    max-width:none;
+  }
+  .mood-collage-strip{
+    grid-template-columns:1fr;
+  }
+  .mood-collage-strip img{
+    height:220px;
+  }
 }
 
 .signature-stage{

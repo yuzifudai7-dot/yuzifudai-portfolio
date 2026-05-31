@@ -67,18 +67,18 @@
         <main id="content" class="wrap">
           <section class="card poster-home">
             <div class="ab-switch" role="tablist" aria-label="主页主视觉方案">
-              <button class="ab-btn active" type="button" data-hero-variant="a">方案 A · 夜色叙事</button>
-              <button class="ab-btn" type="button" data-hero-variant="b">方案 B · 波普城市</button>
+              <button class="ab-btn" type="button" data-hero-variant="a">方案 A · 夜色叙事</button>
+              <button class="ab-btn active" type="button" data-hero-variant="b">方案 B · 波普城市</button>
             </div>
 
             <article class="mood-card mood-hero-stage">
-              <img id="hero-visual" src="../assets/img/style/hero-original-a.png" alt="文史哲一体主视觉A" loading="eager" />
-              <div class="hero-overlay hero-overlay-a" id="hero-overlay-a">
+              <img id="hero-visual" src="../assets/img/style/hero-original-b.png" alt="文史哲一体主视觉B" loading="eager" />
+              <div class="hero-overlay hero-overlay-a" id="hero-overlay-a" hidden>
                 <p>THE DIMENSION OF INTERTWINING</p>
                 <h1>文史哲一体</h1>
                 <span>连接历史、文学与哲学，进入你的思考现场。</span>
               </div>
-              <div class="hero-overlay hero-overlay-b" id="hero-overlay-b" hidden>
+              <div class="hero-overlay hero-overlay-b" id="hero-overlay-b">
                 <p>POP HUMANITIES ARCHIVE</p>
                 <h1>文史哲一体</h1>
                 <span>把知识变成可感知的视觉叙事系统。</span>
@@ -196,6 +196,7 @@
         buttons.forEach((button) => {
           button.addEventListener("click", () => setVariant(button.dataset.heroVariant));
         });
+        setVariant("b");
       })();
 
       document.getElementById("y").textContent = String(new Date().getFullYear());
